@@ -1,0 +1,164 @@
+/* 1. Profile */
+.profile-top-left {
+    width: 36%;
+}
+
+.img-cover {
+    object-fit: cover;
+}
+
+.profile-top-right button {
+    background: none;
+    border-color: lightgrey;
+    padding: 2px 8px !important;
+    font-weight: 600;
+}
+
+.profile-top-right button:focus,
+.profile-top-right button:active,
+.profile-top-right button:hover {
+    background: none;
+    border-color: lightgrey;
+    box-shadow: unset;
+}
+
+.profile-top-right .btn-follow {
+    background-color: #06bcfb;
+    background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
+    min-width: 100px;
+    border: none;
+}
+
+.profile-top-right .btn-follow:active,
+.profile-top-right .btn-follow:focus,
+.profile-top-right .btn-follow:hover {
+    background-color: #06bcfb;
+    background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
+    opacity: 0.8;
+    border: none;
+}
+
+.profile-top-right i {
+    font-size: 24px;
+}
+
+.profile-middle-top button {
+    background: none;
+    border: none;
+    border-radius: unset;
+}
+
+.profile-middle-top button:focus,
+.profile-middle-top button:active,
+.profile-middle-top button:hover {
+    background: none;
+    border: none;
+    box-shadow: unset;
+}
+
+.profile-bottom {
+    font-size: 13px;
+    color: gray;
+}
+
+/* 2. Update User Modal */
+.update-user-modal .modal-content {
+    border-radius: 0.3rem;
+}
+
+.update-user-modal .modal-title {
+    font-size: 16px;
+}
+
+.update-user-modal label {
+    flex: 0.3;
+}
+
+.update-user-modal textarea {
+    resize: none;
+}
+
+.update-user-modal textarea,
+.update-user-modal select,
+.update-user-modal input {
+    flex: 1;
+}
+
+.update-user-modal textarea:focus,
+.update-user-modal select:focus,
+.update-user-modal input:focus {
+    box-shadow: unset;
+}
+
+.update-user-modal .update-user-btn {
+    border: none;
+    background-color: #06bcfb;
+    background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
+}
+
+.update-user-modal .update-user-btn:hover {
+    opacity: 0.8;
+}
+
+.update-user-modal .update-user-btn:focus {
+    box-shadow: unset;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+}
+
+.choose-avatar {
+    bottom: -100%;
+    left: 24%;
+    transition: 0.5s ease-in-out;
+}
+
+.profile-avatar:hover {
+    cursor: pointer;
+}
+
+.profile-avatar:hover .choose-avatar {
+    bottom: 20%;
+}
+
+.choose-avatar input {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+}
+
+/* 3. Toast */
+.toast-messages {
+    position: fixed;
+    left: 1%;
+    bottom: 1%;
+}
+
+/* ************** Tablet and Mobile ************** */
+@media (max-width: 1023px) {
+}
+
+/* ************** Tablet Responsive ************** */
+@media (min-width: 768px) and (max-width: 1023px) {
+}
+
+/* ************** Mobile Responsive ************** */
+@media (max-width: 768px) {
+    /* 1. Toast */
+    .toast-messages {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* 2. Profile */
+    .profile-top {
+        flex-direction: column;
+    }
+
+    .profile-top-right {
+        margin-top: 26px;
+    }
+}

@@ -1,0 +1,185 @@
+/* 1. Header */
+.header {
+    padding: 0 20%;
+    background-color: #06bcfb;
+    background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
+}
+
+.navbar-brand > h3 > a {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    letter-spacing: 6px;
+    font-size: 20px;
+}
+
+/* 2. Search */
+.navbar-middle {
+    background-color: rgb(250, 250, 250);
+    padding: 0 20px;
+}
+
+.navbar-middle input {
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.navbar-middle input:focus {
+    background: none;
+    box-shadow: none;
+}
+
+.navbar-middle > form > i {
+    top: 20%;
+    right: 0;
+}
+
+.search-list {
+    top: 36px;
+    left: -30px;
+    min-width: 320px;
+    z-index: 1000;
+}
+
+.search-list > a > div:hover {
+    background-color: #e9ecef;
+    border-radius: 0.3rem;
+}
+
+.search-list::before {
+    content: '';
+    border-width: 20px 24px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+    position: absolute;
+    left: 43%;
+    top: -30px;
+    z-index: -1;
+}
+
+/* 3. Dropdown Profile */
+/* .dropdown-header .img-active {
+    padding: 1px;
+} */
+.navbar-left i {
+    font-size: 24px;
+}
+
+.dropdown-header-menu > button {
+    background: none;
+    border: none;
+}
+
+.dropdown-header-menu > button:focus,
+.dropdown-header-menu > button:active,
+.dropdown-header-menu > button:hover {
+    background: none;
+    border: none;
+    box-shadow: unset !important;
+}
+
+.dropdown-header-menu > button::after {
+    display: none;
+}
+
+.dropdown-header-menu > .dropdown-menu {
+    min-width: 230px;
+}
+
+.dropdown-header-menu .dropdown-item:active {
+    color: #1e2125;
+    background-color: #e9ecef;
+}
+
+.dropdown-header-menu i {
+    font-size: 20px;
+}
+
+.dropdown-header-menu > .dropdown-menu::before {
+    content: '';
+    border-width: 20px 24px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: -26px;
+}
+
+.dropdown-header-menu > .dropdown-menu button {
+    width: 100%;
+    background: none;
+    border: none;
+}
+
+.dropdown-header-menu > .dropdown-menu button:hover,
+.dropdown-header-menu > .dropdown-menu button:focus {
+    box-shadow: unset;
+    color: #1e2125;
+    background-color: #e9ecef;
+    border-top-left-radius: unset !important;
+    border-top-right-radius: unset !important;
+}
+
+/* ************** Tablet and Mobile ************** */
+@media (max-width: 1023px) {
+    /* 1. Post */
+    .content {
+        padding: 0 10px !important;
+    }
+
+    .content-body {
+        padding-top: 102px !important;
+    }
+
+    /* 2. Header */
+    .header {
+        width: 100vw;
+        padding: 0 10px;
+    }
+
+    .navbar-left {
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
+    .navbar-left > .navbar-nav {
+        width: 100%;
+        text-align: center;
+        margin-right: 0 !important;
+    }
+
+    .search-list {
+        right: 0;
+        left: unset;
+    }
+
+    .navbar-left .dropdown-header-menu {
+        position: relative;
+    }
+
+    .navbar-left .dropdown-menu {
+        position: absolute;
+    }
+}
+
+/* ************** Tablet Responsive ************** */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .search-list::before {
+        left: 60%;
+    }
+
+    .dropdown-header-menu > .dropdown-menu::before {
+        right: 18%;
+    }
+}
+
+/* ************** Mobile Responsive ************** */
+@media (max-width: 768px) {
+    .search-list::before {
+        left: 50%;
+    }
+
+    .dropdown-header-menu > .dropdown-menu::before {
+        right: 5px;
+    }
+}
