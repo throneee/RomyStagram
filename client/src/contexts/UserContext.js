@@ -3,8 +3,7 @@ import axios from 'axios';
 import { userReducer } from '../reducers/userReducer';
 import {
     apiURL,
-    FOLLOWERS,
-    FOLLOWING,
+    FOLLOW,
     LOCAL_STORAGE_TOKEN_NAME,
     SET_AUTH,
     UPDATE_USER,
@@ -23,7 +22,7 @@ const UserContextProvider = ({ children }) => {
         user: null,
     });
 
-    // 2. Modal
+    // 2. Modal Update User
     const [showUpdateUserModal, setShowUpdateUserModal] = useState(false);
 
     // 3. Toast
@@ -37,6 +36,12 @@ const UserContextProvider = ({ children }) => {
 
     // 5. List user Search
     const [usersSearch, setUsersSearch] = useState([]);
+
+    // 6. Modal Following
+    const [showFollowingModal, setShowFollowingModal] = useState(false);
+
+    // 7. Modal Followers
+    const [showFollowersModal, setShowFollowersModal] = useState(false);
 
     // ************************************* Function *************************************
 
@@ -92,6 +97,7 @@ const UserContextProvider = ({ children }) => {
 
             return response.data;
         } catch (error) {
+            console.log(error.response.data);
             if (error.response.data) {
                 return error.response.data;
             } else return { success: false, message: error.message };
@@ -117,6 +123,7 @@ const UserContextProvider = ({ children }) => {
 
             return response.data;
         } catch (error) {
+            console.log(error.response.data);
             if (error.response.data) {
                 return error.response.data;
             } else return { success: false, message: error.message };
@@ -146,6 +153,7 @@ const UserContextProvider = ({ children }) => {
                 setUsersSearch(response.data.users);
             }
         } catch (error) {
+            console.log(error.response.data);
             if (error.response.data) {
                 return error.response.data;
             } else return { success: false, message: error.message };
@@ -161,6 +169,7 @@ const UserContextProvider = ({ children }) => {
                 return response.data.user;
             }
         } catch (error) {
+            console.log(error.response.data);
             if (error.response.data) {
                 return error.response.data;
             } else return { success: false, message: error.message };
@@ -183,6 +192,7 @@ const UserContextProvider = ({ children }) => {
                 return response.data;
             }
         } catch (error) {
+            console.log(error.response.data);
             return error.response.data
                 ? error.response.data
                 : { success: false, message: 'Internal Server Error' };
@@ -196,17 +206,35 @@ const UserContextProvider = ({ children }) => {
 
             if (response.data.success) {
                 dispatch({
-                    type: FOLLOWERS,
-                    payload: { user: response.data.userFollowers },
+                    type: FOLLOW,
+                    payload: { user: response.data.userFollow[0] },
                 });
 
-                dispatch({
-                    type: FOLLOWING,
-                    payload: { user: response.data.userFollowing },
-                });
                 return response.data;
             }
         } catch (error) {
+            console.log(error.response.data);
+            return error.response.data
+                ? error.response.data
+                : { success: false, message: 'Internal Server Error' };
+        }
+    };
+
+    // 8. Follow User
+    const unFollowUser = async (id) => {
+        try {
+            const response = await axios.post(`${apiURL}/user/unfollow/${id}`);
+
+            if (response.data.success) {
+                dispatch({
+                    type: FOLLOW,
+                    payload: { user: response.data.userUnFollow[0] },
+                });
+
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error.response.data);
             return error.response.data
                 ? error.response.data
                 : { success: false, message: 'Internal Server Error' };
@@ -220,6 +248,10 @@ const UserContextProvider = ({ children }) => {
         setUsersSearch,
         showUpdateUserModal,
         setShowUpdateUserModal,
+        showFollowingModal,
+        setShowFollowingModal,
+        showFollowersModal,
+        setShowFollowersModal,
         showToast,
         setShowToast,
         showLoading,
@@ -228,6 +260,7 @@ const UserContextProvider = ({ children }) => {
         searchUser,
         updateUser,
         followUser,
+        unFollowUser,
         signUp,
         signIn,
         logout,

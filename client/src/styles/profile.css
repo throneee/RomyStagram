@@ -38,6 +38,20 @@
     border: none;
 }
 
+.profile-top-right .btn-unfollow {
+    background-color: #f71735;
+    min-width: 100px;
+    border: none;
+}
+
+.profile-top-right .btn-unfollow:active,
+.profile-top-right .btn-unfollow:focus,
+.profile-top-right .btn-unfollow:hover {
+    background-image: linear-gradient(147deg, #f71735 0%, #db3445 74%);
+    opacity: 0.8;
+    border: none;
+}
+
 .profile-top-right i {
     font-size: 24px;
 }
@@ -59,6 +73,11 @@
 .profile-bottom {
     font-size: 13px;
     color: gray;
+}
+
+.show-modal-follow:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 /* 2. Update User Modal */

@@ -3,16 +3,16 @@ import { useParams } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import UpdateUserModal from '../../components/profile/UpdateUserModal';
 import ToastMessages from '../../components/layout/ToastMessages';
+import Info from '../../components/profile/Info';
+import FollowingModal from '../../components/profile/FollowingModal';
 
-import { Image, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 const Profile = () => {
     // ************************************* State *************************************
     const {
         userState: { user },
-        setShowUpdateUserModal,
         getUser,
-        followUser,
     } = useContext(UserContext);
 
     const [usersData, setUsersData] = useState([]);
@@ -32,83 +32,19 @@ const Profile = () => {
     }, [id, user]);
 
     // ************************************* Function *************************************
-    const handleUpdateUser = () => {
-        setShowUpdateUserModal(true);
-    };
-
-    const handleFollow = (e) => {
-        e.preventDefault();
-
-        followUser(id);
-    };
 
     // ************************************* Return *************************************
     return (
         <>
             <UpdateUserModal />
             <ToastMessages />
+            <FollowingModal />
             <div className='content'>
                 <div className='content-body'>
                     {usersData.map((userData) => {
                         return (
                             <div key={userData._id}>
-                                <div className='profile-top d-flex align-items-center pt-4 pb-5'>
-                                    <div className='profile-top-left text-center'>
-                                        <Image
-                                            className='img-cover'
-                                            roundedCircle={true}
-                                            src={userData.avatar}
-                                            width='150px'
-                                            height={'150px'}></Image>
-                                    </div>
-
-                                    <div className='profile-top-right flex-fill'>
-                                        <div className='d-flex align-items-center'>
-                                            <h3 className='fw-light'>
-                                                {userData.username}
-                                            </h3>
-                                            {user._id === id ? (
-                                                <>
-                                                    <Button
-                                                        className='mx-4 text-dark'
-                                                        onClick={
-                                                            handleUpdateUser
-                                                        }>
-                                                        Edit Profile
-                                                    </Button>
-                                                    <i className='bi bi-gear'></i>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <Button
-                                                        className='mx-4 btn-follow'
-                                                        onClick={handleFollow}>
-                                                        Follow
-                                                    </Button>
-                                                    <i className='bi bi-three-dots'></i>
-                                                </>
-                                            )}
-                                        </div>
-
-                                        <div className='my-3'>
-                                            <span>0 posts</span>
-                                            <span className='mx-5'>
-                                                {userData.followers.length}
-                                                &nbsp; followers
-                                            </span>
-                                            <span>
-                                                {userData.following.length}
-                                                &nbsp; following
-                                            </span>
-                                        </div>
-
-                                        <div>
-                                            <h6>{userData.fullname}</h6>
-                                        </div>
-
-                                        <span>{userData.bio}</span>
-                                    </div>
-                                </div>
+                                <Info userData={userData} />
 
                                 <div className='profile-middle border-top'>
                                     <div className='profile-middle-top text-center'>

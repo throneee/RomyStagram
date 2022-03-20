@@ -238,12 +238,9 @@ const userController = {
             if (user.length > 0) {
                 return res.status(400).json({
                     success: false,
-                    message: 'You followed this user',
+                    message: 'You followed this user.',
                 });
             }
-
-            const userFollowers = await User.find({ _id: req.params.id });
-            const userFollowing = await User.find({ _id: req.userID });
 
             // Update followers
             await User.findOneAndUpdate(
@@ -263,11 +260,12 @@ const userController = {
                 { new: true }
             );
 
+            const userFollow = await User.find({ _id: req.userID });
+
             return res.json({
                 success: true,
-                message: 'Followed User',
-                userFollowers,
-                userFollowing,
+                message: 'Followed User.',
+                userFollow,
             });
         } catch (error) {
             console.log(error);
@@ -288,7 +286,7 @@ const userController = {
             if (user.length === 0) {
                 return res.status(400).json({
                     success: false,
-                    message: 'You did not follow this user',
+                    message: 'You did not follow this user.',
                 });
             }
 
@@ -310,9 +308,12 @@ const userController = {
                 { new: true }
             );
 
+            const userUnFollow = await User.find({ _id: req.userID });
+
             return res.json({
                 success: true,
-                message: 'UnFollowed User',
+                message: 'UnFollowed User.',
+                userUnFollow,
             });
         } catch (error) {
             console.log(error);
