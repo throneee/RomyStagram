@@ -9,16 +9,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import UserContextProvider from './contexts/UserContext';
-import PostContextProvider from './contexts/PostContext';
 import Loading from './components/layout/Loading';
 
 ReactDOM.render(
     <React.StrictMode>
         <UserContextProvider>
-            <PostContextProvider>
-                <Loading />
-                <App />
-            </PostContextProvider>
+            <Loading />
+            <App />
         </UserContextProvider>
     </React.StrictMode>,
     document.getElementById('root')

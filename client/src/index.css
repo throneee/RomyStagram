@@ -32,6 +32,3 @@ code {
 
 /* --------------- PROFILE --------------- */
 @import url(./styles/profile.css);
-
-/* --------------- POSTS --------------- */
-@import url(./styles/posts.css);
