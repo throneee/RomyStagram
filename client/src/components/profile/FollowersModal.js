@@ -1,55 +1,43 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 
 import { Modal, Image, Button } from 'react-bootstrap';
 
-const FollowingModal = () => {
+const FollowersModal = () => {
     // ************************************* State *************************************
-    const {
-        userState: { user },
-        showFollowingModal,
-        setShowFollowingModal,
-        followUser,
-        unFollowUser,
-    } = useContext(UserContext);
+    const { showFollowersModal, setShowFollowersModal } =
+        useContext(UserContext);
 
     // ************************************* Function *************************************
     const closeModal = () => {
-        setShowFollowingModal({
+        setShowFollowersModal({
             show: false,
             datas: [],
         });
     };
 
-    const handleFollow = (id) => {
-        followUser(id);
-    };
-
-    const handleUnFollow = (id) => {
-        unFollowUser(id);
-    };
-
     // ************************************* Return *************************************
     return (
         <Modal
-            show={showFollowingModal.show}
+            show={showFollowersModal.show}
             onHide={closeModal}
             centered
-            className='following-modal'>
+            className='followers-modal'>
             <Modal.Header className='py-2' closeButton>
                 <Modal.Title className='w-100 text-center fw-bold'>
-                    Following
+                    Followers
                 </Modal.Title>
             </Modal.Header>
 
             <Modal.Body className='d-flex flex-column pb-0'>
-                {showFollowingModal.datas.length === 0 ? (
+                {showFollowersModal.datas.length === 0 ? (
                     <>
-                        <span className='pb-3 text-center'>No Following.</span>
+                        <span className='pb-3 text-center'>No Followers.</span>
                     </>
                 ) : (
                     <>
-                        {showFollowingModal.datas.map((data) => {
+                        {showFollowersModal.datas.map((data) => {
                             return (
                                 <div
                                     key={data._id}
@@ -66,23 +54,13 @@ const FollowingModal = () => {
                                         </h6>
                                     </div>
 
-                                    {user.following.includes(data._id) ? (
+                                    <Link to={`/profile/${data._id}`}>
                                         <Button
-                                            className='btn-unfollow'
-                                            onClick={() =>
-                                                handleUnFollow(data._id)
-                                            }>
-                                            Unfollow
+                                            onClick={closeModal}
+                                            className='text-dark'>
+                                            View Profile
                                         </Button>
-                                    ) : (
-                                        <Button
-                                            className='btn-follow'
-                                            onClick={() => {
-                                                handleFollow(data._id);
-                                            }}>
-                                            Follow
-                                        </Button>
-                                    )}
+                                    </Link>
                                 </div>
                             );
                         })}
@@ -93,4 +71,4 @@ const FollowingModal = () => {
     );
 };
 
-export default FollowingModal;
+export default FollowersModal;

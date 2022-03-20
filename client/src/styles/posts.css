@@ -1,0 +1,65 @@
+/* 1. Add Post Modal */
+/* 2. Update User Modal */
+.add-post-modal .modal-title {
+    font-size: 16px;
+}
+
+.add-post-modal textarea {
+    resize: none;
+    border: none;
+}
+
+.add-post-modal textarea:focus,
+.add-post-modal select:focus,
+.add-post-modal input:focus {
+    box-shadow: unset;
+}
+
+.add-post-modal .add-post-btn {
+    border: none;
+    background-color: #06bcfb;
+    background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
+}
+
+.add-post-modal .add-post-btn:hover,
+.add-post-modal .add-post-btn:focus {
+    box-shadow: unset;
+    opacity: 0.8;
+}
+
+.add-post-image > i,
+.add-post-image > div {
+    cursor: pointer;
+}
+
+.add-post-image i {
+    font-size: 40px;
+}
+
+.add-post-image #file {
+    opacity: 0;
+}
+
+.show-add-post-image {
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    place-items: center;
+    grid-gap: 10px;
+}
+
+.show-add-post-image > div > img {
+    object-fit: contain;
+}
+
+.stream > i,
+.show-add-post-image > div i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    z-index: 4;
+}

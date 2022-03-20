@@ -1,5 +1,6 @@
 import React from 'react';
 import ToastMessages from '../components/layout/ToastMessages';
+import AddPostModal from '../components/posts/AddPostModal';
 
 const Home = () => {
     return (
@@ -7,7 +8,9 @@ const Home = () => {
             <div className='content'>
                 <div className='content-body'>HOME</div>
             </div>
+
             <ToastMessages />
+            <AddPostModal />
         </>
     );
 };
