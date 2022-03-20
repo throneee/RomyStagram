@@ -34,7 +34,17 @@ const Info = ({ userData }) => {
     };
 
     const handleShowFollowing = () => {
-        setShowFollowingModal(true);
+        setShowFollowingModal({
+            show: true,
+            datas: userData.following,
+        });
+    };
+
+    const handleShowFollowers = () => {
+        setShowFollowersModal({
+            show: true,
+            datas: userData.followers,
+        });
     };
 
     // ************************************* Return *************************************
@@ -87,7 +97,11 @@ const Info = ({ userData }) => {
                         <span className='fw-bolder'>0</span> posts
                     </span>
 
-                    <span className='mx-5 show-modal-follow'>
+                    <span
+                        className={
+                            user._id === id ? 'mx-5 show-modal-follow' : 'mx-5'
+                        }
+                        onClick={user._id === id ? handleShowFollowers : null}>
                         <span className='fw-bolder'>
                             {userData.followers.length}
                         </span>
@@ -95,8 +109,8 @@ const Info = ({ userData }) => {
                     </span>
 
                     <span
-                        className='show-modal-follow'
-                        onClick={handleShowFollowing}>
+                        className={user._id === id ? 'show-modal-follow' : ''}
+                        onClick={user._id === id ? handleShowFollowing : null}>
                         <span className='fw-bolder'>
                             {userData.following.length}
                         </span>

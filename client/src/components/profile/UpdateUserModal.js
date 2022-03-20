@@ -189,8 +189,7 @@ const UpdateUserModal = () => {
 
                 <Modal.Footer className='py-2'>
                     <Button
-                        variant='secondary'
-                        className='flex-fill rounded-3'
+                        className='flex-fill rounded-3 btn-cancel'
                         onClick={closeModal}>
                         Cancle
                     </Button>

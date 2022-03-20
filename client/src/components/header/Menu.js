@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
+import { PostContext } from '../../contexts/PostContext';
 
 import { Nav, Image, Dropdown, Button } from 'react-bootstrap';
 
 const Menu = () => {
     // ************************************* State *************************************
+    // 1. User state
     const {
         userState: {
             user: { _id, avatar },
@@ -13,7 +15,11 @@ const Menu = () => {
         logout,
     } = useContext(UserContext);
 
+    // 2. Path name
     const { pathname } = useLocation();
+
+    // 3. Post state
+    const { showAddPostModal, setShowAddPostModal } = useContext(PostContext);
 
     // ************************************* Function and Variable Declare *************************************
     const menuLinks = [
@@ -53,6 +59,10 @@ const Menu = () => {
         logout();
     };
 
+    const handleShowAddPostModal = () => {
+        setShowAddPostModal(true);
+    };
+
     // ************************************* Return *************************************
     return (
         <div className='navbar-left d-flex align-items-center'>
@@ -61,10 +71,22 @@ const Menu = () => {
                     <Nav className='me-2' key={index}>
                         {link.label === 'AddPost' ||
                         link.label === 'Notification' ? (
-                            <Nav.Link>
-                                <i className={`${link.icon} text-white`}></i>
+                            <Nav.Link
+                                onClick={
+                                    link.label === 'AddPost'
+                                        ? handleShowAddPostModal
+                                        : null
+                                }>
+                                {showAddPostModal &&
+                                link.label === 'AddPost' ? (
+                                    <i
+                                        className={`${link.iconfill} text-white`}></i>
+                                ) : (
+                                    <i
+                                        className={`${link.icon} text-white`}></i>
+                                )}
                             </Nav.Link>
-                        ) : link.path === pathname ? (
+                        ) : link.path === pathname && !showAddPostModal ? (
                             <Nav.Link to={link.path} as={Link}>
                                 <i
                                     className={`${link.iconfill} text-white`}></i>
@@ -82,11 +104,22 @@ const Menu = () => {
                 <Dropdown className='dropdown-header-menu'>
                     <Dropdown.Toggle className='bg-transparent'>
                         <Image
-                            className='img-cover'
+                            className={
+                                pathname === `/profile/${_id}` &&
+                                !showAddPostModal
+                                    ? 'img-cover border'
+                                    : 'img-cover'
+                            }
                             roundedCircle={true}
                             width={'26px'}
                             height={'26px'}
-                            src={avatar}></Image>
+                            src={avatar}
+                            style={
+                                pathname === `/profile/${_id}` &&
+                                !showAddPostModal
+                                    ? { padding: '1px' }
+                                    : {}
+                            }></Image>
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu className='dropdown-menu-end mb-0 p-0 border-0 shadow rounded-3'>

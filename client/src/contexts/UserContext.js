@@ -38,10 +38,16 @@ const UserContextProvider = ({ children }) => {
     const [usersSearch, setUsersSearch] = useState([]);
 
     // 6. Modal Following
-    const [showFollowingModal, setShowFollowingModal] = useState(false);
+    const [showFollowingModal, setShowFollowingModal] = useState({
+        show: false,
+        datas: [],
+    });
 
     // 7. Modal Followers
-    const [showFollowersModal, setShowFollowersModal] = useState(false);
+    const [showFollowersModal, setShowFollowersModal] = useState({
+        show: false,
+        datas: [],
+    });
 
     // ************************************* Function *************************************
 
@@ -220,7 +226,7 @@ const UserContextProvider = ({ children }) => {
         }
     };
 
-    // 8. Follow User
+    // 9. UnFollow User
     const unFollowUser = async (id) => {
         try {
             const response = await axios.post(`${apiURL}/user/unfollow/${id}`);

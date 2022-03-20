@@ -5,6 +5,8 @@ import UpdateUserModal from '../../components/profile/UpdateUserModal';
 import ToastMessages from '../../components/layout/ToastMessages';
 import Info from '../../components/profile/Info';
 import FollowingModal from '../../components/profile/FollowingModal';
+import FollowersModal from '../../components/profile/FollowersModal';
+import AddPostModal from '../../components/posts/AddPostModal';
 
 import { Button } from 'react-bootstrap';
 
@@ -20,15 +22,11 @@ const Profile = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        if (user._id === id) {
-            setUsersData([user]);
-        } else {
-            const fetchUserData = async () => {
-                const userFetch = await getUser(id);
-                setUsersData([userFetch]);
-            };
-            fetchUserData();
-        }
+        const fetchUserData = async () => {
+            const userFetch = await getUser(id);
+            setUsersData([userFetch]);
+        };
+        fetchUserData();
     }, [id, user]);
 
     // ************************************* Function *************************************
@@ -39,6 +37,9 @@ const Profile = () => {
             <UpdateUserModal />
             <ToastMessages />
             <FollowingModal />
+            <FollowersModal />
+            <AddPostModal />
+
             <div className='content'>
                 <div className='content-body'>
                     {usersData.map((userData) => {

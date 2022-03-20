@@ -7,6 +7,7 @@
     object-fit: cover;
 }
 
+.followers-modal a > button,
 .profile-top-right button {
     background: none;
     border-color: lightgrey;
@@ -14,42 +15,68 @@
     font-weight: 600;
 }
 
+.followers-modal a > button:focus,
+.followers-modal a > button:active,
+.followers-modal a > button:hover,
 .profile-top-right button:focus,
 .profile-top-right button:active,
 .profile-top-right button:hover {
     background: none;
     border-color: lightgrey;
     box-shadow: unset;
+    opacity: 0.8;
 }
 
-.profile-top-right .btn-follow {
-    background-color: #06bcfb;
-    background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
+.btn-follow {
+    padding: 2px 8px !important;
+    background-color: #06bcfb !important;
+    background-image: linear-gradient(
+        315deg,
+        #06bcfb 0%,
+        #4884ee 74%
+    ) !important;
     min-width: 100px;
     border: none;
 }
 
-.profile-top-right .btn-follow:active,
-.profile-top-right .btn-follow:focus,
-.profile-top-right .btn-follow:hover {
-    background-color: #06bcfb;
-    background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
+.btn-follow:active,
+.btn-follow:focus,
+.btn-follow:hover {
+    background-color: #06bcfb !important;
+    background-image: linear-gradient(
+        315deg,
+        #06bcfb 0%,
+        #4884ee 74%
+    ) !important;
     opacity: 0.8;
     border: none;
+    box-shadow: unset;
 }
 
-.profile-top-right .btn-unfollow {
-    background-color: #f71735;
+.btn-unfollow {
+    padding: 2px 8px !important;
+    background-color: #f71735 !important;
+    background-image: linear-gradient(
+        147deg,
+        #f71735 0%,
+        #db3445 74%
+    ) !important;
     min-width: 100px;
     border: none;
 }
 
-.profile-top-right .btn-unfollow:active,
-.profile-top-right .btn-unfollow:focus,
-.profile-top-right .btn-unfollow:hover {
-    background-image: linear-gradient(147deg, #f71735 0%, #db3445 74%);
+.btn-unfollow:active,
+.btn-unfollow:focus,
+.btn-unfollow:hover {
+    background-color: #f71735 !important;
+    background-image: linear-gradient(
+        147deg,
+        #f71735 0%,
+        #db3445 74%
+    ) !important;
     opacity: 0.8;
     border: none;
+    box-shadow: unset;
 }
 
 .profile-top-right i {
@@ -77,14 +104,10 @@
 
 .show-modal-follow:hover {
     cursor: pointer;
-    text-decoration: underline;
+    opacity: 0.8;
 }
 
 /* 2. Update User Modal */
-.update-user-modal .modal-content {
-    border-radius: 0.3rem;
-}
-
 .update-user-modal .modal-title {
     font-size: 16px;
 }
@@ -148,11 +171,32 @@
     opacity: 0;
 }
 
+.btn-cancel {
+    border: none;
+    background-color: #c2b6b6;
+    background-image: linear-gradient(315deg, #c2b6b6 0%, #576574 74%);
+}
+
+.btn-cancel:hover {
+    opacity: 0.8;
+}
+
+.btn-cancel:focus {
+    box-shadow: unset;
+}
+
 /* 3. Toast */
 .toast-messages {
     position: fixed;
     left: 1%;
     bottom: 1%;
+    z-index: 10000;
+}
+
+/* 4. Following Modal */
+.followers-modal .modal-title,
+.following-modal .modal-title {
+    font-size: 16px;
 }
 
 /* ************** Tablet and Mobile ************** */
