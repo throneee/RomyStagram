@@ -1,5 +1,130 @@
-/* 1. Add Post Modal */
-/* 2. Update User Modal */
+/* 1. Posts - Home */
+.post-header-right {
+    cursor: pointer;
+}
+
+.post-comment i,
+.post-interact i {
+    font-size: 24px;
+}
+
+.post-interact i:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.post-content > p {
+    word-break: break-all;
+}
+
+.seemore {
+    font-weight: 600;
+}
+
+.seemore:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.post-comment input {
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.post-comment input:focus {
+    box-shadow: none;
+}
+
+.post-comment button {
+    background: none;
+    color: rgb(38, 164, 247);
+    border: none;
+}
+
+.post-comment button:disabled,
+.post-comment button:active,
+.post-comment button:focus,
+.post-comment button:hover {
+    background: none;
+    color: rgb(38, 164, 247);
+    box-shadow: none;
+}
+
+.no-post > div {
+    width: 100px;
+    height: 100px;
+    border: 3px solid gray;
+}
+
+.no-post > div > i {
+    font-size: 50px;
+}
+
+/* .home-right {
+    flex: 0.55;
+    padding-top: 52px;
+    height: 500px;
+    position: sticky;
+    top: 60px;
+}
+
+.home-right-profileName {
+    color: #333;
+    text-decoration: none;
+}
+
+.home-right-profileName:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+.home-right-top button {
+    background: none;
+    color: rgb(38, 164, 247);
+    border: none;
+    letter-spacing: -1px;
+}
+
+.btn-seeAll {
+    background: none;
+    color: gray;
+    border: none;
+    letter-spacing: -1px;
+}
+
+.btn-seeAll:focus,
+.btn-seeAll:hover {
+    background: none;
+    color: gray;
+    opacity: 0.8;
+    box-shadow: none;
+}
+
+.home-right-top button:focus,
+.home-right-top button:hover {
+    background: none;
+    color: rgb(38, 164, 247);
+    opacity: 0.8;
+    box-shadow: none;
+}
+
+.btn-visit {
+    min-width: 150px;
+    border-radius: 10px;
+    letter-spacing: 4px;
+    background-color: #6617cb;
+    background-image: linear-gradient(315deg, #6617cb 0%, #cb218e 74%);
+    border: none;
+}
+
+.home-right-bottom {
+    font-size: 12px;
+    color: lightgray;
+    font-weight: 600;
+} */
+
+/* 2. Add Post Modal */
 .add-post-modal .modal-title {
     font-size: 16px;
 }
@@ -62,4 +187,33 @@
     right: 0;
     cursor: pointer;
     z-index: 4;
+}
+
+/* ************** Tablet and Mobile ************** */
+@media (max-width: 1023px) {
+    /* 2. Post */
+    /* .content {
+        padding: 0 10px;
+    }
+
+    .content-body > div {
+        margin: 0;
+    }
+
+    .content-body > div > div {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .home-right {
+        display: none !important;
+    } */
+}
+
+/* ************** Tablet Responsive ************** */
+@media (min-width: 768px) and (max-width: 1023px) {
+}
+
+/* ************** Mobile Responsive ************** */
+@media (max-width: 768px) {
 }

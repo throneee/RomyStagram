@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 
 import { Modal, Image, Button } from 'react-bootstrap';
@@ -54,9 +55,12 @@ const FollowingModal = () => {
                                 <div
                                     key={data._id}
                                     className='d-flex align-items-center justify-content-between mb-3'>
-                                    <div className='d-flex align-items-center'>
+                                    <Link
+                                        to={`/profile/${data._id}`}
+                                        onClick={closeModal}
+                                        className='d-flex align-items-center text-decoration-none text-dark'>
                                         <Image
-                                            className='img-cover'
+                                            className='img-cover border'
                                             roundedCircle={true}
                                             src={data.avatar}
                                             width='30px'
@@ -64,7 +68,7 @@ const FollowingModal = () => {
                                         <h6 className='mb-0 ms-3'>
                                             {data.username}
                                         </h6>
-                                    </div>
+                                    </Link>
 
                                     {user.following.includes(data._id) ? (
                                         <Button

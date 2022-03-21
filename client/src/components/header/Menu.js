@@ -104,12 +104,7 @@ const Menu = () => {
                 <Dropdown className='dropdown-header-menu'>
                     <Dropdown.Toggle className='bg-transparent'>
                         <Image
-                            className={
-                                pathname === `/profile/${_id}` &&
-                                !showAddPostModal
-                                    ? 'img-cover border'
-                                    : 'img-cover'
-                            }
+                            className='img-cover border'
                             roundedCircle={true}
                             width={'26px'}
                             height={'26px'}
@@ -117,7 +112,7 @@ const Menu = () => {
                             style={
                                 pathname === `/profile/${_id}` &&
                                 !showAddPostModal
-                                    ? { padding: '1px' }
+                                    ? { padding: '2px' }
                                     : {}
                             }></Image>
                     </Dropdown.Toggle>

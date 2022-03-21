@@ -1,38 +1,63 @@
 import React, { useContext, useState, useRef } from 'react';
 import { PostContext } from '../../contexts/PostContext';
 import { UserContext } from '../../contexts/UserContext';
+import AlertMessages from '../layout/AlertMessages';
+import { imageUpload } from '../../utils/imageUpload';
 
 import { Modal, Form, Button, Image } from 'react-bootstrap';
 
 const AddPostModal = () => {
     // ************************************* State *************************************
+    // 1. User context
     const {
         userState: {
             user: { avatar, username },
         },
+        setShowLoading,
         setShowToast,
     } = useContext(UserContext);
 
-    const { showAddPostModal, setShowAddPostModal } = useContext(PostContext);
+    // 2. Post context
+    const { showAddPostModal, setShowAddPostModal, createPost } =
+        useContext(PostContext);
 
+    // 3. New Post form
+    const [newPost, setNewPost] = useState({
+        content: '',
+    });
+    const { content } = newPost;
+
+    // 4. New Post-Images form
     const [images, setImages] = useState([]);
 
+    // 5. Stream
     const [stream, setStream] = useState(false);
 
+    // 6. Ref
     const videoRef = useRef();
     const canvasRef = useRef();
 
+    // 7. Tracks
     const [tracks, setTracks] = useState('');
 
+    // 8. Alert
+    const [alertState, setAlertState] = useState(null);
+
     // ************************************* Function *************************************
-    // 1. Close Modal
+    // 0. Close Modal
     const closeModal = () => {
+        setNewPost({ content: '' });
         setImages([]);
         setStream(false);
         if (tracks) {
             tracks.stop();
         }
         setShowAddPostModal(false);
+    };
+
+    // 1. Onchange Add post form
+    const onChangeAddPostForm = (e) => {
+        setNewPost({ ...newPost, [e.target.name]: e.target.value });
     };
 
     // 2. Onchange Image
@@ -42,18 +67,26 @@ const AddPostModal = () => {
 
         files.forEach((file) => {
             if (!file) {
-                setShowToast({
-                    show: true,
-                    message: 'File does not exist.',
-                });
+                setAlertState({ message: 'File does not exist.' });
+                setTimeout(() => {
+                    setAlertState(null);
+                }, 5000);
+
                 return;
             }
 
-            if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-                setShowToast({
-                    show: true,
-                    message: 'Image format is incorrect.',
+            if (
+                file.type !== 'image/jpeg' &&
+                file.type !== 'image/png' &&
+                file.type !== 'image/gif'
+            ) {
+                setAlertState({
+                    message:
+                        'Image Format is incorrect. Only accept .jpg, .png or .gif file.',
                 });
+                setTimeout(() => {
+                    setAlertState(null);
+                }, 5000);
                 return;
             }
 
@@ -70,7 +103,7 @@ const AddPostModal = () => {
         setImages(newImages);
     };
 
-    // 4. Take a photo
+    // 4. Enable Stream
     const handleStream = () => {
         setStream(true);
 
@@ -87,6 +120,7 @@ const AddPostModal = () => {
         }
     };
 
+    // 5. Take a photo
     const handleCapture = () => {
         const width = videoRef.current.clientWidth;
         const height = videoRef.current.clientHeight;
@@ -100,11 +134,51 @@ const AddPostModal = () => {
         setImages([...images, { camera: URL }]);
     };
 
+    // 6. Stop Stream
     const handleStopStream = () => {
         if (tracks) {
             tracks.stop();
         }
         setStream(false);
+    };
+
+    // 7. Add post
+    const handleAddPost = async (e) => {
+        e.preventDefault();
+
+        setShowLoading(true);
+
+        // upload images to cloudinary
+        let media = [];
+        if (images.length > 0) {
+            media = await imageUpload(images);
+        }
+
+        // call api
+        const response = await createPost({
+            content,
+            images: media,
+        });
+
+        if (!response.success) {
+            setAlertState({ message: response.message });
+            setTimeout(() => {
+                setAlertState(null);
+            }, 5000);
+
+            setShowLoading(false);
+            return;
+        }
+
+        // create successull
+        setShowToast({
+            show: true,
+            message: 'Create Post Successfully.',
+        });
+
+        setShowLoading(false);
+
+        closeModal();
     };
 
     // ************************************* Return *************************************
@@ -120,10 +194,13 @@ const AddPostModal = () => {
                 </Modal.Title>
             </Modal.Header>
 
-            <Form className='flex-fill d-flex flex-column'>
+            <Form
+                className='flex-fill d-flex flex-column'
+                onSubmit={handleAddPost}>
                 <Modal.Body className='d-flex flex-column '>
                     <div className='d-flex align-items-center'>
                         <Image
+                            className='img-cover border'
                             roundedCircle={true}
                             src={avatar}
                             width={'30px'}
@@ -134,6 +211,8 @@ const AddPostModal = () => {
                     <Form.Group className='my-3'>
                         <Form.Control
                             as='textarea'
+                            value={content}
+                            onChange={onChangeAddPostForm}
                             rows={3}
                             placeholder={`What's on your mind, ${username}?`}
                             name='content'></Form.Control>
@@ -191,7 +270,7 @@ const AddPostModal = () => {
                         ) : (
                             <>
                                 <div
-                                    className='d-flex align-items-center'
+                                    className='flex-fill d-flex align-items-center justify-content-center'
                                     onClick={handleStream}>
                                     <i className='bi bi-camera-fill'></i>
                                     <span className='fw-bolder ms-2'>
@@ -199,7 +278,7 @@ const AddPostModal = () => {
                                     </span>
                                 </div>
 
-                                <Form.Group className='ms-5 position-relative d-flex align-items-center'>
+                                <Form.Group className='flex-fill position-relative d-flex align-items-center justify-content-center'>
                                     <i className='bi bi-images'></i>
 
                                     <span className='fw-bolder ms-2'>
@@ -219,6 +298,10 @@ const AddPostModal = () => {
                                 </Form.Group>
                             </>
                         )}
+                    </div>
+
+                    <div className='d-flex align-items-center justify-content-center mt-3'>
+                        <AlertMessages info={alertState} />
                     </div>
                 </Modal.Body>
 

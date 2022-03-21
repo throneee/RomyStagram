@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { Image, Button } from 'react-bootstrap';
 import { UserContext } from '../../contexts/UserContext';
+import { PostContext } from '../../contexts/PostContext';
 
-const Info = ({ userData }) => {
+import { Image, Button } from 'react-bootstrap';
+
+const Info = ({ userData, countPost }) => {
     // ************************************* State *************************************
     const { id } = useParams();
 
@@ -15,6 +17,10 @@ const Info = ({ userData }) => {
         followUser,
         unFollowUser,
     } = useContext(UserContext);
+
+    const {
+        postState: { posts },
+    } = useContext(PostContext);
 
     // ************************************* Function *************************************
     const handleUpdateUser = () => {
@@ -52,7 +58,7 @@ const Info = ({ userData }) => {
         <div className='profile-top d-flex align-items-center py-5'>
             <div className='profile-top-left text-center'>
                 <Image
-                    className='img-cover'
+                    className='img-cover border'
                     roundedCircle={true}
                     src={userData.avatar}
                     width='150px'
@@ -94,7 +100,8 @@ const Info = ({ userData }) => {
 
                 <div className='my-3'>
                     <span>
-                        <span className='fw-bolder'>0</span> posts
+                        <span className='fw-bolder'>{countPost}</span>{' '}
+                        {countPost > 1 ? 'posts' : 'post'}
                     </span>
 
                     <span

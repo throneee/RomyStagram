@@ -45,7 +45,7 @@ const UpdateUserModal = () => {
             media = await imageUpload([avatar]);
         }
 
-        const response = await updateUser(user._id, {
+        await updateUser(user._id, {
             fullname,
             gender,
             phone,
@@ -75,13 +75,14 @@ const UpdateUserModal = () => {
             <Form className='d-flex flex-column' onSubmit={handleUpdateUser}>
                 <Modal.Header className='py-2'>
                     <Modal.Title className='w-100 text-center fw-bold'>
-                        Update User
+                        Edit Profile
                     </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body className='d-flex flex-column'>
                     <div className='profile-avatar mb-3 position-relative text-center mx-auto overflow-hidden'>
                         <Image
+                            className='img-cover border'
                             roundedCircle={true}
                             src={
                                 avatar

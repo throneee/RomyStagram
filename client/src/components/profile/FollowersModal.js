@@ -42,9 +42,12 @@ const FollowersModal = () => {
                                 <div
                                     key={data._id}
                                     className='d-flex align-items-center justify-content-between mb-3'>
-                                    <div className='d-flex align-items-center'>
+                                    <Link
+                                        to={`/profile/${data._id}`}
+                                        onClick={closeModal}
+                                        className='d-flex align-items-center text-decoration-none text-dark'>
                                         <Image
-                                            className='img-cover'
+                                            className='img-cover border'
                                             roundedCircle={true}
                                             src={data.avatar}
                                             width='30px'
@@ -52,7 +55,7 @@ const FollowersModal = () => {
                                         <h6 className='mb-0 ms-3'>
                                             {data.username}
                                         </h6>
-                                    </div>
+                                    </Link>
 
                                     <Link to={`/profile/${data._id}`}>
                                         <Button

@@ -114,6 +114,7 @@ const userController = {
             return res.json({
                 success: true,
                 message: 'Sign In Successfully.',
+
                 accessToken,
             });
         } catch (error) {
