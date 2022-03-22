@@ -189,6 +189,85 @@
     z-index: 4;
 }
 
+/* 3. Action Post Modal */
+.action-post-modal .modal-content {
+    width: 400px;
+}
+
+.action-post-modal > .modal-dialog-centered {
+    justify-content: center;
+}
+
+.action-post-modal button {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.action-post-modal button:active,
+.action-post-modal button:focus,
+.action-post-modal button:hover {
+    background: none;
+    opacity: 0.8;
+    box-shadow: none;
+}
+
+/* 4. Delete Post Modal */
+.delete-post-modal .modal-content {
+    width: 300px;
+    border: 2px solid lightgrey;
+}
+
+.delete-post-modal > .modal-dialog-centered {
+    justify-content: center;
+}
+
+.delete-post-modal .modal-title {
+    font-size: 16px;
+}
+
+.delete-post-modal button {
+    background: none;
+    color: gray;
+    border: none;
+}
+
+.delete-post-modal button:active,
+.delete-post-modal button:hover,
+.delete-post-modal button:focus {
+    background: none;
+    color: gray;
+    opacity: 0.8;
+    box-shadow: none;
+}
+
+/* 5. Unfollow Modal */
+.unfollow-post-modal .modal-content {
+    width: 400px;
+}
+
+.unfollow-post-modal > .modal-dialog-centered {
+    justify-content: center;
+}
+
+.unfollow-post-modal button {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.unfollow-post-modal button:active,
+.unfollow-post-modal button:focus,
+.unfollow-post-modal button:hover {
+    background: none;
+    opacity: 0.8;
+    box-shadow: none;
+}
+
 /* ************** Tablet and Mobile ************** */
 @media (max-width: 1023px) {
     /* 2. Post */

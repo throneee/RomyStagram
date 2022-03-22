@@ -38,9 +38,156 @@ const postController = {
         try {
             const posts = await Post.find({
                 user: [...req.user.following, req.userID],
-            }).populate('user', 'username avatar');
+            })
+                .sort('-createdAt')
+                .populate('user likes', 'username avatar');
 
             return res.json({ success: true, posts });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
+    updatePost: async (req, res) => {
+        try {
+            const { content, images } = req.body;
+
+            if (images.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Image is required.',
+                });
+            }
+
+            let updatedPost = {
+                content,
+                images,
+            };
+
+            const updatePostCondition = {
+                _id: req.params.id,
+                user: req.userID,
+            };
+
+            updatedPost = await Post.findOneAndUpdate(
+                updatePostCondition,
+                updatedPost,
+                { new: true }
+            ).populate('user likes', 'username avatar');
+
+            // User not authorised or post not found
+            if (!updatedPost) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'User not authorised or Post not found.',
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: 'Post have updated.',
+                post: updatedPost,
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
+    deletePost: async (req, res) => {
+        try {
+            const deletePostCondition = {
+                _id: req.params.id,
+                user: req.userID,
+            };
+            const deletedPost = await Post.findOneAndDelete(
+                deletePostCondition
+            );
+
+            // User not authorised or post not found
+            if (!deletedPost) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'User not authorised or post not found.',
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: 'Post is deleted !',
+                post: deletedPost,
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
+    likePost: async (req, res) => {
+        try {
+            // Check post is liked or not
+            const post = await Post.find({
+                _id: req.params.id,
+                likes: req.userID,
+            });
+            if (post.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'You liked this post.',
+                });
+            }
+
+            // Update post is liked
+            await Post.findOneAndUpdate(
+                { _id: req.params.id },
+                {
+                    $push: { likes: req.userID },
+                },
+                { new: true }
+            );
+
+            return res.json({
+                success: true,
+                message: 'Liked post.',
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
+    unLikePost: async (req, res) => {
+        try {
+            // Check post is unliked or not
+            const post = await Post.find({
+                _id: req.params.id,
+                likes: req.userID,
+            });
+            if (post.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'You did not like this post.',
+                });
+            }
+
+            // Update post is liked
+            await Post.findOneAndUpdate(
+                { _id: req.params.id },
+                {
+                    $pull: { likes: req.userID },
+                },
+                { new: true }
+            );
+
+            return res.json({
+                success: true,
+                message: 'UnLiked post.',
+            });
         } catch (error) {
             console.log(error);
             return res

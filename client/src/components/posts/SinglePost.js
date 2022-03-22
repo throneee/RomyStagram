@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../contexts/UserContext';
+import { PostContext } from '../../contexts/PostContext';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import CarouselPostImages from './CarouselPostImages';
@@ -7,13 +9,42 @@ import { Image, Form, Button } from 'react-bootstrap';
 
 const SinglePost = ({ post }) => {
     // ************************************* State *************************************
+    const {
+        userState: { user },
+    } = useContext(UserContext);
+
+    const { setShowActionModal, findPost, likePost, unLikePost } =
+        useContext(PostContext);
+
     const [readMore, setReadMore] = useState(false);
 
     const [comment, setComment] = useState('');
 
+    const [isLike, setIsLike] = useState(false);
+    useEffect(() => {
+        if (post.likes.find((like) => like._id === user._id)) {
+            setIsLike(true);
+        }
+    }, []);
+
     // ************************************* Function *************************************
     const onChangeComment = (e) => {
         setComment(e.target.value);
+    };
+
+    const handleShowActionModal = () => {
+        findPost(post._id);
+        setShowActionModal(true);
+    };
+
+    const handleLikePost = () => {
+        setIsLike(true);
+        likePost(post._id);
+    };
+
+    const handleUnLikePost = () => {
+        setIsLike(false);
+        unLikePost(post._id);
     };
 
     // ************************************* Return *************************************
@@ -33,7 +64,9 @@ const SinglePost = ({ post }) => {
                     <h6 className='mb-0 ms-3'>{post.user.username}</h6>
                 </Link>
 
-                <div className='post-header-right'>
+                <div
+                    className='post-header-right'
+                    onClick={handleShowActionModal}>
                     <i className='bi bi-three-dots'></i>
                 </div>
             </div>
@@ -51,7 +84,34 @@ const SinglePost = ({ post }) => {
 
             <div className='post-interact d-flex justify-content-between px-3 py-2'>
                 <div>
-                    <i className='bi bi-suit-heart'></i>
+                    {/* {post.likes.length === 0 ? (
+                        <i
+                            className='bi bi-suit-heart'
+                            onClick={handleLikePost}></i>
+                    ) : (
+                        post.likes.map((like) => {
+                            return like._id === user._id ? (
+                                <i
+                                    key={like._id}
+                                    className='bi bi-suit-heart-fill text-danger'
+                                    onClick={handleUnLikePost}></i>
+                            ) : (
+                                <i
+                                    key={like._id}
+                                    className='bi bi-suit-heart'
+                                    onClick={handleLikePost}></i>
+                            );
+                        })
+                    )} */}
+                    {isLike ? (
+                        <i
+                            className='bi bi-suit-heart-fill text-danger'
+                            onClick={handleUnLikePost}></i>
+                    ) : (
+                        <i
+                            className='bi bi-suit-heart'
+                            onClick={handleLikePost}></i>
+                    )}
                     <i className='bi bi-chat mx-4'></i>
                     <i className='bi bi-send'></i>
                 </div>
@@ -86,7 +146,7 @@ const SinglePost = ({ post }) => {
                         </p>
                     </div>
                 </div>
-                <p>{moment(post.createAt).fromNow()}</p>
+                <p>{moment(post.createdAt).fromNow()}</p>
             </div>
 
             <div className='post-comment d-flex px-3 py-2 border-top'>

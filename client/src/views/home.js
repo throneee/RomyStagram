@@ -2,7 +2,11 @@ import React, { useContext, useEffect } from 'react';
 import { PostContext } from '../contexts/PostContext';
 import ToastMessages from '../components/layout/ToastMessages';
 import AddPostModal from '../components/posts/AddPostModal';
+import UpdatePostModal from '../components/posts/UpdatePostModal';
 import SinglePost from '../components/posts/SinglePost';
+import ActionModal from '../components/posts/ActionModal';
+import DeletePostModal from '../components/posts/DeletePostModal';
+import UnFollowModal from '../components/posts/UnFollowModal';
 
 import { Spinner, Row, Col } from 'react-bootstrap';
 
@@ -14,20 +18,20 @@ const Home = () => {
     } = useContext(PostContext);
     useEffect(() => {
         getPosts();
-    }, []);
+    }, [getPosts]);
 
     // ************************************* Function and Variable declare *************************************
     let body = null;
 
     if (postLoading) {
         body = (
-            <div className='text-center my-5 col-8'>
+            <div className='text-center my-5 col-12 col-md-8'>
                 <Spinner animation='border' variant='info' />
             </div>
         );
     } else if (posts.length === 0) {
         body = (
-            <div className='pb-4 col-8'>
+            <div className='pb-4 col-12 col-md-8'>
                 <div className='no-post d-flex flex-column align-items-center py-3 mt-4 w-100'>
                     <div className='rounded-circle d-flex justify-content-center align-items-center'>
                         <i className='bi bi-camera text-secondary'></i>
@@ -66,6 +70,10 @@ const Home = () => {
 
             <ToastMessages />
             <AddPostModal />
+            <ActionModal />
+            <UpdatePostModal />
+            <DeletePostModal />
+            <UnFollowModal />
         </>
     );
 };
