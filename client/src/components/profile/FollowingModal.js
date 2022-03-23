@@ -10,8 +10,8 @@ const FollowingModal = () => {
         userState: { user },
         showFollowingModal,
         setShowFollowingModal,
+        setShowUnFollowModal,
         followUser,
-        unFollowUser,
     } = useContext(UserContext);
 
     // ************************************* Function *************************************
@@ -26,8 +26,11 @@ const FollowingModal = () => {
         followUser(id);
     };
 
-    const handleUnFollow = (id) => {
-        unFollowUser(id);
+    const handleShowUnFollowModal = (data) => {
+        setShowUnFollowModal({
+            show: true,
+            userData: data,
+        });
     };
 
     // ************************************* Return *************************************
@@ -74,7 +77,7 @@ const FollowingModal = () => {
                                         <Button
                                             className='btn-unfollow'
                                             onClick={() =>
-                                                handleUnFollow(data._id)
+                                                handleShowUnFollowModal(data)
                                             }>
                                             Unfollow
                                         </Button>

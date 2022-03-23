@@ -49,6 +49,12 @@ const UserContextProvider = ({ children }) => {
         datas: [],
     });
 
+    // 8. Modal Unfollow
+    const [showUnFollowModal, setShowUnFollowModal] = useState({
+        show: false,
+        userData: null,
+    });
+
     // ************************************* Function *************************************
 
     // 1. Authenticated User
@@ -258,6 +264,8 @@ const UserContextProvider = ({ children }) => {
         setShowFollowingModal,
         showFollowersModal,
         setShowFollowersModal,
+        showUnFollowModal,
+        setShowUnFollowModal,
         showToast,
         setShowToast,
         showLoading,

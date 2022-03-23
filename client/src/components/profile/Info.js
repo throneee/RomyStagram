@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
-import { PostContext } from '../../contexts/PostContext';
 
 import { Image, Button } from 'react-bootstrap';
 
@@ -14,29 +13,24 @@ const Info = ({ userData, countPost }) => {
         setShowUpdateUserModal,
         setShowFollowingModal,
         setShowFollowersModal,
+        setShowUnFollowModal,
         followUser,
-        unFollowUser,
     } = useContext(UserContext);
-
-    const {
-        postState: { posts },
-    } = useContext(PostContext);
 
     // ************************************* Function *************************************
     const handleUpdateUser = () => {
         setShowUpdateUserModal(true);
     };
 
-    const handleFollow = (e) => {
-        e.preventDefault();
-
+    const handleFollow = () => {
         followUser(id);
     };
 
-    const handleUnFollow = (e) => {
-        e.preventDefault();
-
-        unFollowUser(id);
+    const handleShowUnFollowModal = () => {
+        setShowUnFollowModal({
+            show: true,
+            userData,
+        });
     };
 
     const handleShowFollowing = () => {
@@ -81,8 +75,8 @@ const Info = ({ userData, countPost }) => {
                         <>
                             <Button
                                 className='mx-4 btn-unfollow'
-                                onClick={handleUnFollow}>
-                                UnFollow
+                                onClick={handleShowUnFollowModal}>
+                                Unfollow
                             </Button>
                             <i className='bi bi-three-dots'></i>
                         </>

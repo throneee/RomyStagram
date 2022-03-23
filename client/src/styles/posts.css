@@ -26,6 +26,11 @@
     text-decoration: underline;
 }
 
+.view-comment:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 .post-comment input {
     background: none;
     border: none;
@@ -125,6 +130,15 @@
 } */
 
 /* 2. Add Post Modal */
+.add-post-modal .modal-content {
+    min-width: 800px;
+    flex-direction: row;
+}
+
+.add-post-modal > .modal-dialog-centered {
+    justify-content: center;
+}
+
 .add-post-modal .modal-title {
     font-size: 16px;
 }
@@ -165,28 +179,26 @@
     opacity: 0;
 }
 
-.show-add-post-image {
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    place-items: center;
-    grid-gap: 10px;
-}
-
-.show-add-post-image > div > img {
-    object-fit: contain;
+/* 2.1 Carousel add post */
+.carousel-add-post .carousel-inner {
+    height: 100%;
 }
 
 .stream > i,
-.show-add-post-image > div i {
+.show-add-post-images .add-post-img i {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 6px;
+    right: 10px;
     cursor: pointer;
     z-index: 4;
+    font-weight: 700;
+    font-size: 30px;
+    box-shadow: unset !important;
+}
+
+.stream > i:hover,
+.show-add-post-images .add-post-img i:hover {
+    opacity: 0.8;
 }
 
 /* 3. Action Post Modal */
@@ -268,31 +280,45 @@
     box-shadow: none;
 }
 
+/* 6. Comment Modal */
+.comment-modal .modal-content {
+    min-width: 1000px;
+    flex-direction: row;
+}
+
+.comment-modal > .modal-dialog-centered {
+    justify-content: center;
+}
+
+.comment-modal .modal-body > div:first-child {
+    margin-top: 0 !important;
+}
+
 /* ************** Tablet and Mobile ************** */
 @media (max-width: 1023px) {
-    /* 2. Post */
-    /* .content {
-        padding: 0 10px;
+    /* 1.Add post modal */
+    .add-post-modal .modal-content {
+        flex-direction: column;
+        min-width: unset;
     }
 
-    .content-body > div {
-        margin: 0;
+    .add-post-modal textarea {
+        height: 6em;
     }
-
-    .content-body > div > div {
-        padding-right: 0;
-        padding-left: 0;
-    }
-
-    .home-right {
-        display: none !important;
-    } */
 }
 
 /* ************** Tablet Responsive ************** */
 @media (min-width: 768px) and (max-width: 1023px) {
+    /* 1.Add post modal */
+    .add-post-modal .show-add-post-images {
+        height: 300px;
+    }
 }
 
 /* ************** Mobile Responsive ************** */
 @media (max-width: 768px) {
+    /* 1.Add post modal */
+    .add-post-modal .show-add-post-images {
+        height: 200px;
+    }
 }

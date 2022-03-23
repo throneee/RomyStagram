@@ -8,6 +8,7 @@ const ActionModal = () => {
     // ************************************* State *************************************
     const {
         userState: { user },
+        setShowUnFollowModal,
     } = useContext(UserContext);
 
     const {
@@ -16,7 +17,6 @@ const ActionModal = () => {
         showActionModal,
         setShowActionModal,
         setShowDeletePostModal,
-        setShowUnFollowModal,
     } = useContext(PostContext);
 
     // ************************************* Function *************************************
@@ -33,7 +33,9 @@ const ActionModal = () => {
     };
 
     const handleShowUnFollowModal = () => {
-        setShowUnFollowModal(true);
+        setShowUnFollowModal({
+            show: true,
+        });
     };
 
     // ************************************* Return *************************************

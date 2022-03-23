@@ -17,7 +17,8 @@ const Header = () => {
                     {
                         <Link
                             to='/home'
-                            className='text-decoration-none fst-italic text-white'>
+                            className='text-decoration-none fst-italic text-white'
+                            onClick={() => window.scrollTo({ top: 0 })}>
                             ROMY
                         </Link>
                     }

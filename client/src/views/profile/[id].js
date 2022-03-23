@@ -9,6 +9,7 @@ import FollowingModal from '../../components/profile/FollowingModal';
 import FollowersModal from '../../components/profile/FollowersModal';
 import AddPostModal from '../../components/posts/AddPostModal';
 import CarouselPostImages from '../../components/posts/CarouselPostImages';
+import UnFollowModal from '../../components/profile/UnFollowModal';
 
 import { Button, Row, Col, Image } from 'react-bootstrap';
 
@@ -92,6 +93,7 @@ const Profile = () => {
             <FollowingModal />
             <FollowersModal />
             <AddPostModal />
+            <UnFollowModal />
 
             <div className='content'>
                 <div className='content-body'>

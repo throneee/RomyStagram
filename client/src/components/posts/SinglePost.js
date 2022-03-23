@@ -11,14 +11,21 @@ const SinglePost = ({ post }) => {
     // ************************************* State *************************************
     const {
         userState: { user },
+        setShowToast,
     } = useContext(UserContext);
 
-    const { setShowActionModal, findPost, likePost, unLikePost } =
-        useContext(PostContext);
+    const {
+        setShowActionModal,
+        setShowCommentModal,
+        findPost,
+        likePost,
+        unLikePost,
+        commentPost,
+    } = useContext(PostContext);
 
     const [readMore, setReadMore] = useState(false);
 
-    const [comment, setComment] = useState('');
+    const [content, setContent] = useState('');
 
     const [isLike, setIsLike] = useState(false);
     useEffect(() => {
@@ -28,8 +35,8 @@ const SinglePost = ({ post }) => {
     }, []);
 
     // ************************************* Function *************************************
-    const onChangeComment = (e) => {
-        setComment(e.target.value);
+    const onChangeContent = (e) => {
+        setContent(e.target.value);
     };
 
     const handleShowActionModal = () => {
@@ -45,6 +52,32 @@ const SinglePost = ({ post }) => {
     const handleUnLikePost = () => {
         setIsLike(false);
         unLikePost(post._id);
+    };
+
+    const handleShowCommentModal = () => {
+        setShowCommentModal({
+            show: true,
+            postData: post,
+        });
+    };
+
+    const handleComment = async (e) => {
+        e.preventDefault();
+
+        if (!content.trim()) {
+            return;
+        }
+
+        await commentPost({
+            postID: post._id,
+            content,
+            createdAt: new Date().toISOString(),
+        });
+
+        setShowToast({
+            show: true,
+            message: 'You have commented a post.',
+        });
     };
 
     // ************************************* Return *************************************
@@ -84,25 +117,6 @@ const SinglePost = ({ post }) => {
 
             <div className='post-interact d-flex justify-content-between px-3 py-2'>
                 <div>
-                    {/* {post.likes.length === 0 ? (
-                        <i
-                            className='bi bi-suit-heart'
-                            onClick={handleLikePost}></i>
-                    ) : (
-                        post.likes.map((like) => {
-                            return like._id === user._id ? (
-                                <i
-                                    key={like._id}
-                                    className='bi bi-suit-heart-fill text-danger'
-                                    onClick={handleUnLikePost}></i>
-                            ) : (
-                                <i
-                                    key={like._id}
-                                    className='bi bi-suit-heart'
-                                    onClick={handleLikePost}></i>
-                            );
-                        })
-                    )} */}
                     {isLike ? (
                         <i
                             className='bi bi-suit-heart-fill text-danger'
@@ -121,7 +135,7 @@ const SinglePost = ({ post }) => {
                 </div>
             </div>
 
-            <div className='px-3'>
+            <div className='px-3 mb-3'>
                 <p className='mb-0'>
                     {post.likes.length}{' '}
                     {post.likes.length > 1 ? 'likes' : 'like'}
@@ -146,7 +160,22 @@ const SinglePost = ({ post }) => {
                         </p>
                     </div>
                 </div>
-                <p>{moment(post.createdAt).fromNow()}</p>
+                <p className='text-secondary mb-0' style={{ fontSize: '14px' }}>
+                    {moment(post.createdAt).fromNow()}
+                </p>
+
+                {post.comments.length > 0 ? (
+                    <div className='mt-1 view-comment'>
+                        <span
+                            className='text-secondary'
+                            onClick={handleShowCommentModal}>
+                            View{` ${post.comments.length} `}
+                            {post.comments.length > 1 ? 'comments' : 'comment'}
+                        </span>
+                    </div>
+                ) : (
+                    <></>
+                )}
             </div>
 
             <div className='post-comment d-flex px-3 py-2 border-top'>
@@ -154,14 +183,16 @@ const SinglePost = ({ post }) => {
                     <i className='bi bi-emoji-smile'></i>
                 </div>
 
-                <Form className='d-flex flex-fill'>
+                <Form className='d-flex flex-fill' onSubmit={handleComment}>
                     <Form.Control
                         type='text'
                         name='comment'
-                        value={comment}
-                        onChange={onChangeComment}
+                        value={content}
+                        onChange={onChangeContent}
                         placeholder='Add a comment...'></Form.Control>
-                    <Button disabled={comment ? false : true}>Post</Button>
+                    <Button disabled={content ? false : true} type='submit'>
+                        Post
+                    </Button>
                 </Form>
             </div>
         </div>

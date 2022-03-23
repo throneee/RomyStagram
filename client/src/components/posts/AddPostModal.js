@@ -3,6 +3,7 @@ import { PostContext } from '../../contexts/PostContext';
 import { UserContext } from '../../contexts/UserContext';
 import AlertMessages from '../layout/AlertMessages';
 import { imageUpload } from '../../utils/imageUpload';
+import CarouselPostImages from './CarouselPostImages';
 
 import { Modal, Form, Button, Image } from 'react-bootstrap';
 
@@ -188,134 +189,148 @@ const AddPostModal = () => {
             onHide={closeModal}
             centered
             className='add-post-modal'>
-            <Modal.Header className='py-2'>
-                <Modal.Title className='w-100 text-center fw-bold'>
-                    Create new post
-                </Modal.Title>
-            </Modal.Header>
-
-            <Form
-                className='flex-fill d-flex flex-column'
-                onSubmit={handleAddPost}>
-                <Modal.Body className='d-flex flex-column '>
-                    <div className='d-flex align-items-center'>
+            <div className='show-add-post-images flex-fill w-100'>
+                {images.length === 0 ? (
+                    <div className='h-100 d-flex flex-column justify-content-center align-items-center text-secondary'>
+                        <i className='bi bi-image display-3'></i>
+                        <span
+                            className='display-5'
+                            style={{ fontStyle: 'italic' }}>
+                            No photos
+                        </span>
+                    </div>
+                ) : images.length > 1 ? (
+                    <CarouselPostImages
+                        images={images}
+                        path='add-update-post-modal'
+                        deleteImage={deleteImage}
+                    />
+                ) : (
+                    <div className='position-relative w-100 h-100 add-post-img'>
                         <Image
-                            className='img-cover border'
-                            roundedCircle={true}
-                            src={avatar}
-                            width={'30px'}
-                            height={'30px'}></Image>
-                        <h6 className='mb-0 ms-3'>{username}</h6>
+                            className='w-100 h-100 img-thumbnail'
+                            src={
+                                images[0].camera
+                                    ? images[0].camera
+                                    : URL.createObjectURL(images[0])
+                            }></Image>
+
+                        <i
+                            className='bi bi-x-circle text-danger'
+                            onClick={() => {
+                                deleteImage(0);
+                            }}></i>
                     </div>
+                )}
+            </div>
 
-                    <Form.Group className='my-3'>
-                        <Form.Control
-                            as='textarea'
-                            value={content}
-                            onChange={onChangeAddPostForm}
-                            rows={3}
-                            placeholder={`What's on your mind, ${username}?`}
-                            name='content'></Form.Control>
-                    </Form.Group>
+            <div className='flex-fill w-100 d-flex flex-column'>
+                <Modal.Header className='py-2'>
+                    <Modal.Title className='w-100 text-center fw-bold'>
+                        Create new post
+                    </Modal.Title>
+                </Modal.Header>
 
-                    <div className='show-add-post-image'>
-                        {images.map((image, index) => {
-                            return (
-                                <div
-                                    key={index}
-                                    className='w-100 h-100 position-relative py-1'>
-                                    <Image
-                                        className='w-100 h-100 img-thumbnail d-block img-cover'
-                                        src={
-                                            image.camera
-                                                ? image.camera
-                                                : URL.createObjectURL(image)
-                                        }
-                                        alt='image'></Image>
-
-                                    <i
-                                        className='bi bi-x-circle text-danger shadow'
-                                        onClick={() => {
-                                            deleteImage(index);
-                                        }}></i>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    {stream && (
-                        <div className='position-relative stream'>
-                            <video
-                                autoPlay
-                                muted
-                                ref={videoRef}
-                                width={'100%'}
-                                height={'100%'}></video>
-
-                            <i
-                                className='bi bi-x-circle text-danger'
-                                onClick={handleStopStream}></i>
-
-                            <canvas
-                                ref={canvasRef}
-                                style={{ display: 'none' }}></canvas>
+                <Form
+                    className='flex-fill d-flex flex-column'
+                    onSubmit={handleAddPost}>
+                    <Modal.Body className='d-flex flex-column '>
+                        <div className='d-flex align-items-center'>
+                            <Image
+                                className='img-cover border'
+                                roundedCircle={true}
+                                src={avatar}
+                                width={'30px'}
+                                height={'30px'}></Image>
+                            <h6 className='mb-0 ms-3'>{username}</h6>
                         </div>
-                    )}
 
-                    <div className='d-flex align-items-center justify-content-center add-post-image text-secondary'>
-                        {stream ? (
-                            <i
-                                className='bi bi-camera-fill'
-                                onClick={handleCapture}></i>
-                        ) : (
-                            <>
-                                <div
-                                    className='flex-fill d-flex align-items-center justify-content-center'
-                                    onClick={handleStream}>
-                                    <i className='bi bi-camera-fill'></i>
-                                    <span className='fw-bolder ms-2'>
-                                        Take a photo
-                                    </span>
-                                </div>
+                        <Form.Group className='my-3 flex-fill'>
+                            <Form.Control
+                                as='textarea'
+                                value={content}
+                                onChange={onChangeAddPostForm}
+                                rows={8}
+                                placeholder={`What's on your mind, ${username}?`}
+                                name='content'></Form.Control>
+                        </Form.Group>
 
-                                <Form.Group className='flex-fill position-relative d-flex align-items-center justify-content-center'>
-                                    <i className='bi bi-images'></i>
+                        {stream && (
+                            <div className='position-relative stream'>
+                                <video
+                                    autoPlay
+                                    muted
+                                    ref={videoRef}
+                                    width={'100%'}
+                                    height={'100%'}></video>
 
-                                    <span className='fw-bolder ms-2'>
-                                        Choose a file
-                                    </span>
+                                <i
+                                    className='bi bi-x-circle text-danger'
+                                    onClick={handleStopStream}></i>
 
-                                    <Form.Control
-                                        className='position-absolute'
-                                        type='file'
-                                        name='file'
-                                        id='file'
-                                        multiple
-                                        accept='image/*'
-                                        onChange={
-                                            onChangeImages
-                                        }></Form.Control>
-                                </Form.Group>
-                            </>
+                                <canvas
+                                    ref={canvasRef}
+                                    style={{ display: 'none' }}></canvas>
+                            </div>
                         )}
-                    </div>
 
-                    <div className='d-flex align-items-center justify-content-center mt-3'>
-                        <AlertMessages info={alertState} />
-                    </div>
-                </Modal.Body>
+                        <div className='d-flex align-items-center justify-content-center add-post-image text-secondary'>
+                            {stream ? (
+                                <i
+                                    className='bi bi-camera-fill'
+                                    onClick={handleCapture}></i>
+                            ) : (
+                                <>
+                                    <div
+                                        className='flex-fill d-flex align-items-center justify-content-center'
+                                        onClick={handleStream}>
+                                        <i className='bi bi-camera-fill'></i>
+                                        <span className='fw-bolder ms-2'>
+                                            Take a photo
+                                        </span>
+                                    </div>
 
-                <Modal.Footer className='justify-content-center'>
-                    <Button
-                        onClick={closeModal}
-                        className='flex-fill btn-cancel'>
-                        Cancel
-                    </Button>
-                    <Button type='submit' className='flex-fill add-post-btn'>
-                        Create
-                    </Button>
-                </Modal.Footer>
-            </Form>
+                                    <Form.Group className='flex-fill position-relative d-flex align-items-center justify-content-center'>
+                                        <i className='bi bi-images'></i>
+
+                                        <span className='fw-bolder ms-2'>
+                                            Choose a file
+                                        </span>
+
+                                        <Form.Control
+                                            className='position-absolute'
+                                            type='file'
+                                            name='file'
+                                            id='file'
+                                            multiple
+                                            accept='image/*'
+                                            onChange={
+                                                onChangeImages
+                                            }></Form.Control>
+                                    </Form.Group>
+                                </>
+                            )}
+                        </div>
+
+                        <div className='d-flex align-items-center justify-content-center mt-3'>
+                            <AlertMessages info={alertState} />
+                        </div>
+                    </Modal.Body>
+
+                    <Modal.Footer className='justify-content-center'>
+                        <Button
+                            onClick={closeModal}
+                            className='flex-fill btn-cancel'>
+                            Cancel
+                        </Button>
+                        <Button
+                            type='submit'
+                            className='flex-fill add-post-btn'>
+                            Create
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </div>
         </Modal>
     );
 };

@@ -40,8 +40,14 @@ const postController = {
                 user: [...req.user.following, req.userID],
             })
                 .sort('-createdAt')
-                .populate('user likes', 'username avatar');
-
+                .populate('user likes', 'username avatar')
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'user likes',
+                        select: '-password',
+                    },
+                });
             return res.json({ success: true, posts });
         } catch (error) {
             console.log(error);

@@ -6,7 +6,8 @@ import UpdatePostModal from '../components/posts/UpdatePostModal';
 import SinglePost from '../components/posts/SinglePost';
 import ActionModal from '../components/posts/ActionModal';
 import DeletePostModal from '../components/posts/DeletePostModal';
-import UnFollowModal from '../components/posts/UnFollowModal';
+import UnFollowModal from '../components/profile/UnFollowModal';
+import CommentModal from '../components/posts/CommentModal';
 
 import { Spinner, Row, Col } from 'react-bootstrap';
 
@@ -74,6 +75,7 @@ const Home = () => {
             <UpdatePostModal />
             <DeletePostModal />
             <UnFollowModal />
+            <CommentModal />
         </>
     );
 };

@@ -38,11 +38,14 @@ const PostContextProvider = ({ children }) => {
     // 4. Modal update post
     const [showUpdatePostModal, setShowUpdatePostModal] = useState(false);
 
-    // 5. Modal add post
+    // 5. Modal delete post
     const [showDeletePostModal, setShowDeletePostModal] = useState(false);
 
-    // 6. Modal add post
-    const [showUnFollowModal, setShowUnFollowModal] = useState(false);
+    // 6. Modal comment
+    const [showCommentModal, setShowCommentModal] = useState({
+        show: false,
+        postData: null,
+    });
 
     // ************************************* Function *************************************
 
@@ -169,6 +172,23 @@ const PostContextProvider = ({ children }) => {
         }
     };
 
+    // 7. Comment Post
+    const commentPost = async (commentForm) => {
+        try {
+            const response = await axios.post(
+                `${apiURL}/comments`,
+                commentForm
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
+        }
+    };
+
     // ************************************* Post Data *************************************
     const PostContextData = {
         postState,
@@ -180,8 +200,8 @@ const PostContextProvider = ({ children }) => {
         setShowUpdatePostModal,
         showDeletePostModal,
         setShowDeletePostModal,
-        showUnFollowModal,
-        setShowUnFollowModal,
+        showCommentModal,
+        setShowCommentModal,
         createPost,
         getPosts,
         updatePost,
@@ -189,6 +209,7 @@ const PostContextProvider = ({ children }) => {
         findPost,
         likePost,
         unLikePost,
+        commentPost,
     };
 
     // ************************************* Return Provider *************************************
