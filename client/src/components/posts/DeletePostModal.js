@@ -48,7 +48,9 @@ const DeletePostModal = () => {
             </Modal.Header>
 
             <Modal.Body className='p-2 text-center'>
-                <p>Deleting this post will remove it from all my posts. </p>
+                <p>
+                    After you finish deleting, post will be permanently deleted.
+                </p>
             </Modal.Body>
 
             <Modal.Footer className='p-0 w-100'>

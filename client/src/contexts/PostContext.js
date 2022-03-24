@@ -7,7 +7,6 @@ import {
     apiURL,
     ADD_POST,
     GET_POSTS_SUCCESS,
-    GET_POSTS_FAIL,
     UPDATE_POST,
     FIND_POST,
     DELETE_POST,
@@ -92,7 +91,10 @@ const PostContextProvider = ({ children }) => {
                 });
             }
         } catch (error) {
-            dispatch({ type: GET_POSTS_FAIL });
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
         }
     };
 
@@ -147,7 +149,13 @@ const PostContextProvider = ({ children }) => {
         try {
             const response = await axios.post(`${apiURL}/posts/like/${postID}`);
 
-            return response.data;
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: response.data.post,
+                });
+                return response.data;
+            }
         } catch (error) {
             console.log(error.response.data);
             if (error.response.data) {
@@ -163,7 +171,13 @@ const PostContextProvider = ({ children }) => {
                 `${apiURL}/posts/unlike/${postID}`
             );
 
-            return response.data;
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: response.data.post,
+                });
+                return response.data;
+            }
         } catch (error) {
             console.log(error.response.data);
             if (error.response.data) {
@@ -180,7 +194,13 @@ const PostContextProvider = ({ children }) => {
                 commentForm
             );
 
-            return response.data;
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: response.data.post,
+                });
+                return response.data;
+            }
         } catch (error) {
             console.log(error.response.data);
             if (error.response.data) {

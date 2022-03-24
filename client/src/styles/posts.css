@@ -13,6 +13,7 @@
     cursor: pointer;
 }
 
+.post-comment > span,
 .post-content > p {
     word-break: break-all;
 }
@@ -179,7 +180,7 @@
     opacity: 0;
 }
 
-/* 2.1 Carousel add post */
+/* 3. Carousel add post */
 .carousel-add-post .carousel-inner {
     height: 100%;
 }
@@ -201,7 +202,7 @@
     opacity: 0.8;
 }
 
-/* 3. Action Post Modal */
+/* 4. Action Post Modal */
 .action-post-modal .modal-content {
     width: 400px;
 }
@@ -226,7 +227,7 @@
     box-shadow: none;
 }
 
-/* 4. Delete Post Modal */
+/* 5. Delete Post Modal */
 .delete-post-modal .modal-content {
     width: 300px;
     border: 2px solid lightgrey;
@@ -255,34 +256,10 @@
     box-shadow: none;
 }
 
-/* 5. Unfollow Modal */
-.unfollow-post-modal .modal-content {
-    width: 400px;
-}
-
-.unfollow-post-modal > .modal-dialog-centered {
-    justify-content: center;
-}
-
-.unfollow-post-modal button {
-    background: none;
-    border: none;
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-}
-
-.unfollow-post-modal button:active,
-.unfollow-post-modal button:focus,
-.unfollow-post-modal button:hover {
-    background: none;
-    opacity: 0.8;
-    box-shadow: none;
-}
-
 /* 6. Comment Modal */
 .comment-modal .modal-content {
     min-width: 1000px;
+    height: 616px;
     flex-direction: row;
 }
 
@@ -290,9 +267,22 @@
     justify-content: center;
 }
 
+.comment-modal .modal-body {
+    height: 400px;
+    overflow-y: auto;
+}
+
 .comment-modal .modal-body > div:first-child {
     margin-top: 0 !important;
 }
+
+.comment-last {
+    background-color: rgb(243, 243, 243);
+}
+
+/* .comment-modal .carousel img {
+    height: 100%;
+} */
 
 /* ************** Tablet and Mobile ************** */
 @media (max-width: 1023px) {

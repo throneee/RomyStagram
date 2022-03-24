@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { PostContext } from '../../contexts/PostContext';
@@ -61,7 +61,13 @@ const CommentModal = () => {
                 centered
                 className='comment-modal'>
                 <div className='flex-fill w-100 p-2'>
-                    <CarouselPostImages images={postData.images} />
+                    {postData.images.length > 1 ? (
+                        <CarouselPostImages images={postData.images} />
+                    ) : (
+                        <Image
+                            className='w-100 h-100'
+                            src={postData.images[0].url}></Image>
+                    )}
                 </div>
 
                 <div className='flex-fill w-100 border-start d-flex flex-column'>
@@ -103,7 +109,8 @@ const CommentModal = () => {
 
                         <div className='w-100'>
                             <h6 className='m-0'>
-                                {postData.likes.length} like
+                                {postData.likes.length}{' '}
+                                {postData.likes.length > 1 ? 'likes' : 'like'}
                             </h6>
 
                             <p

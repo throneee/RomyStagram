@@ -1,7 +1,6 @@
 import {
     ADD_POST,
     GET_POSTS_SUCCESS,
-    GET_POSTS_FAIL,
     FIND_POST,
     UPDATE_POST,
     DELETE_POST,
@@ -25,18 +24,15 @@ export const postReducer = (state, action) => {
             };
         }
         case GET_POSTS_SUCCESS: {
-            return {
-                ...state,
-                postLoading: false,
-                posts: payload,
-            };
-        }
-        case GET_POSTS_FAIL: {
-            return {
-                ...state,
-                postLoading: false,
-                posts: [],
-            };
+            if (JSON.stringify(state.posts) === JSON.stringify(payload)) {
+                return state;
+            } else {
+                return {
+                    ...state,
+                    postLoading: false,
+                    posts: payload,
+                };
+            }
         }
         case UPDATE_POST: {
             const updatedPosts = state.posts.map((post) =>

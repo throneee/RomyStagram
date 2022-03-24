@@ -1,4 +1,4 @@
-import { SET_AUTH, UPDATE_USER, FOLLOW } from '../utils/contants';
+import { SET_AUTH, UPDATE_USER } from '../utils/contants';
 
 export const userReducer = (state, action) => {
     const {
@@ -15,12 +15,6 @@ export const userReducer = (state, action) => {
                 user,
             };
         case UPDATE_USER: {
-            return {
-                ...state,
-                user,
-            };
-        }
-        case FOLLOW: {
             return {
                 ...state,
                 user,

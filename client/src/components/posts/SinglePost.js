@@ -25,6 +25,8 @@ const SinglePost = ({ post }) => {
 
     const [readMore, setReadMore] = useState(false);
 
+    const [readMoreComment, setReadMoreComment] = useState(false);
+
     const [content, setContent] = useState('');
 
     const [isLike, setIsLike] = useState(false);
@@ -78,6 +80,8 @@ const SinglePost = ({ post }) => {
             show: true,
             message: 'You have commented a post.',
         });
+
+        setContent('');
     };
 
     // ************************************* Return *************************************
@@ -177,6 +181,97 @@ const SinglePost = ({ post }) => {
                     <></>
                 )}
             </div>
+
+            {post.comments.length > 0 && (
+                <div className='px-3 comment-last d-flex align-items-center justify-content-between mb-3 mx-3 py-2 rounded-3'>
+                    <div className='comment-left d-flex align-items-center'>
+                        <Image
+                            className='img-cover border'
+                            roundedCircle={true}
+                            src={
+                                post.comments[post.comments.length - 1].user
+                                    .avatar
+                            }
+                            width={'30px'}
+                            height={'30px'}></Image>
+
+                        <div className='ms-3'>
+                            <div className='d-flex align-items-center post-comment'>
+                                <h6 className='mb-0'>
+                                    {
+                                        post.comments[post.comments.length - 1]
+                                            .user.username
+                                    }
+                                </h6>
+                                <span className='ms-2'>
+                                    {post.comments[post.comments.length - 1]
+                                        .content.length < 30
+                                        ? post.comments[
+                                              post.comments.length - 1
+                                          ].content
+                                        : readMoreComment
+                                        ? post.comments[
+                                              post.comments.length - 1
+                                          ].content
+                                        : post.comments[
+                                              post.comments.length - 1
+                                          ].content.slice(0, 30) + ' ...'}
+                                    {post.comments[post.comments.length - 1]
+                                        .content.length > 30 && (
+                                        <span
+                                            onClick={() =>
+                                                setReadMoreComment(
+                                                    !readMoreComment
+                                                )
+                                            }
+                                            className='ms-1 seemore'>
+                                            {readMoreComment
+                                                ? 'Hide'
+                                                : 'See more'}
+                                        </span>
+                                    )}
+                                </span>
+                            </div>
+
+                            <div
+                                className='d-flex align-items-center mt-1'
+                                style={{ fontSize: '12px' }}>
+                                <p className='text-secondary mb-0 me-3'>
+                                    {moment(
+                                        post.comments[post.comments.length - 1]
+                                            .createdAt
+                                    ).fromNow()}
+                                </p>
+
+                                {post.comments[post.comments.length - 1].likes
+                                    .length === 0 ? (
+                                    <></>
+                                ) : (
+                                    <p className='mb-0 me-3'>
+                                        {
+                                            post.comments[
+                                                post.comments.length - 1
+                                            ].likes.length
+                                        }{' '}
+                                        {post.comments[post.comments.length - 1]
+                                            .likes.length > 1
+                                            ? 'likes'
+                                            : 'like'}
+                                    </p>
+                                )}
+
+                                <p className='mb-0 me-3'>Reply</p>
+
+                                <i className='bi bi-three-dots'></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='comment-right'>
+                        <i className='bi bi-suit-heart'></i>
+                    </div>
+                </div>
+            )}
 
             <div className='post-comment d-flex px-3 py-2 border-top'>
                 <div>

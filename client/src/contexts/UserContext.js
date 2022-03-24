@@ -3,7 +3,6 @@ import axios from 'axios';
 import { userReducer } from '../reducers/userReducer';
 import {
     apiURL,
-    FOLLOW,
     LOCAL_STORAGE_TOKEN_NAME,
     SET_AUTH,
     UPDATE_USER,
@@ -218,7 +217,7 @@ const UserContextProvider = ({ children }) => {
 
             if (response.data.success) {
                 dispatch({
-                    type: FOLLOW,
+                    type: UPDATE_USER,
                     payload: { user: response.data.userFollow[0] },
                 });
 
@@ -239,7 +238,7 @@ const UserContextProvider = ({ children }) => {
 
             if (response.data.success) {
                 dispatch({
-                    type: FOLLOW,
+                    type: UPDATE_USER,
                     payload: { user: response.data.userUnFollow[0] },
                 });
 

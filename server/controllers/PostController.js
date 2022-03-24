@@ -81,7 +81,15 @@ const postController = {
                 updatePostCondition,
                 updatedPost,
                 { new: true }
-            ).populate('user likes', 'username avatar');
+            )
+                .populate('user likes', 'username avatar')
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'user likes',
+                        select: '-password',
+                    },
+                });
 
             // User not authorised or post not found
             if (!updatedPost) {
@@ -148,17 +156,26 @@ const postController = {
             }
 
             // Update post is liked
-            await Post.findOneAndUpdate(
+            const newPost = await Post.findOneAndUpdate(
                 { _id: req.params.id },
                 {
                     $push: { likes: req.userID },
                 },
                 { new: true }
-            );
+            )
+                .populate('user likes', 'username avatar')
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'user likes',
+                        select: '-password',
+                    },
+                });
 
             return res.json({
                 success: true,
                 message: 'Liked post.',
+                post: newPost,
             });
         } catch (error) {
             console.log(error);
@@ -182,17 +199,25 @@ const postController = {
             }
 
             // Update post is liked
-            await Post.findOneAndUpdate(
+            const newPost = await Post.findOneAndUpdate(
                 { _id: req.params.id },
                 {
                     $pull: { likes: req.userID },
                 },
                 { new: true }
-            );
-
+            )
+                .populate('user likes', 'username avatar')
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'user likes',
+                        select: '-password',
+                    },
+                });
             return res.json({
                 success: true,
                 message: 'UnLiked post.',
+                post: newPost,
             });
         } catch (error) {
             console.log(error);

@@ -22,13 +22,21 @@ const commentController = {
                 reply,
             });
 
-            await Post.findOneAndUpdate(
+            const newPost = await Post.findOneAndUpdate(
                 { _id: postID },
                 {
                     $push: { comments: newComment._id },
                 },
                 { new: true }
-            );
+            )
+                .populate('user likes', 'username avatar')
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'user likes',
+                        select: '-password',
+                    },
+                });
 
             await newComment.save();
 
@@ -36,6 +44,7 @@ const commentController = {
                 success: true,
                 message: 'You have commented.',
                 comment: newComment,
+                post: newPost,
             });
         } catch (error) {
             console.log(error);

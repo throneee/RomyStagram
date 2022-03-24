@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { PostContext } from '../contexts/PostContext';
+import { UserContext } from '../contexts/UserContext';
 import ToastMessages from '../components/layout/ToastMessages';
 import AddPostModal from '../components/posts/AddPostModal';
 import UpdatePostModal from '../components/posts/UpdatePostModal';
@@ -14,12 +15,17 @@ import { Spinner, Row, Col } from 'react-bootstrap';
 const Home = () => {
     // ************************************* State *************************************
     const {
+        userState: { user },
+    } = useContext(UserContext);
+
+    const {
         postState: { postLoading, posts },
         getPosts,
     } = useContext(PostContext);
+
     useEffect(() => {
         getPosts();
-    }, [getPosts]);
+    }, [posts, user]);
 
     // ************************************* Function and Variable declare *************************************
     let body = null;
