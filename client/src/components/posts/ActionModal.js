@@ -69,7 +69,7 @@ const ActionModal = () => {
                         <Button
                             className='text-dark'
                             onClick={handleShowUpdatePostModal}>
-                            Update
+                            Edit Post
                         </Button>
                     </>
                 ) : (

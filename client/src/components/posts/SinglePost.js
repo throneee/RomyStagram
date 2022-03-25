@@ -16,6 +16,7 @@ const SinglePost = ({ post }) => {
 
     const {
         setShowActionModal,
+        showCommentModal,
         setShowCommentModal,
         findPost,
         likePost,
@@ -29,40 +30,60 @@ const SinglePost = ({ post }) => {
 
     const [content, setContent] = useState('');
 
-    const [isLike, setIsLike] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
     useEffect(() => {
         if (post.likes.find((like) => like._id === user._id)) {
-            setIsLike(true);
+            setIsLiked(true);
+        } else {
+            setIsLiked(false);
         }
-    }, []);
+    }, [post]);
+
+    const [newComment, setNewComment] = useState(false);
 
     // ************************************* Function *************************************
     const onChangeContent = (e) => {
         setContent(e.target.value);
     };
 
+    // show action modal
     const handleShowActionModal = () => {
         findPost(post._id);
         setShowActionModal(true);
     };
 
+    // like post
     const handleLikePost = () => {
-        setIsLike(true);
+        setIsLiked(true);
         likePost(post._id);
     };
 
+    // unlike post
     const handleUnLikePost = () => {
-        setIsLike(false);
+        setIsLiked(false);
         unLikePost(post._id);
     };
 
+    // show comment modal
     const handleShowCommentModal = () => {
         setShowCommentModal({
             show: true,
             postData: post,
         });
     };
+    useEffect(() => {
+        if (
+            showCommentModal.postData &&
+            showCommentModal.postData._id === post._id
+        ) {
+            setShowCommentModal({
+                ...showCommentModal,
+                postData: post,
+            });
+        }
+    }, [post]);
 
+    // create comment
     const handleComment = async (e) => {
         e.preventDefault();
 
@@ -75,6 +96,11 @@ const SinglePost = ({ post }) => {
             content,
             createdAt: new Date().toISOString(),
         });
+
+        setNewComment(true);
+        setTimeout(() => {
+            setNewComment(false);
+        }, 5000);
 
         setShowToast({
             show: true,
@@ -121,7 +147,7 @@ const SinglePost = ({ post }) => {
 
             <div className='post-interact d-flex justify-content-between px-3 py-2'>
                 <div>
-                    {isLike ? (
+                    {isLiked ? (
                         <i
                             className='bi bi-suit-heart-fill text-danger'
                             onClick={handleUnLikePost}></i>
@@ -153,12 +179,12 @@ const SinglePost = ({ post }) => {
                                 ? post.content
                                 : readMore
                                 ? post.content
-                                : post.content.slice(0, 50) + ' ...'}
+                                : post.content.slice(0, 50)}
                             {post.content.length > 50 && (
                                 <span
                                     onClick={() => setReadMore(!readMore)}
                                     className='ms-1 seemore'>
-                                    {readMore ? 'Hide' : 'See more'}
+                                    {readMore ? 'Hide' : '...See more'}
                                 </span>
                             )}
                         </p>
@@ -182,7 +208,7 @@ const SinglePost = ({ post }) => {
                 )}
             </div>
 
-            {post.comments.length > 0 && (
+            {newComment && post.comments.length > 0 && (
                 <div className='px-3 comment-last d-flex align-items-center justify-content-between mb-3 mx-3 py-2 rounded-3'>
                     <div className='comment-left d-flex align-items-center'>
                         <Image
@@ -215,7 +241,7 @@ const SinglePost = ({ post }) => {
                                           ].content
                                         : post.comments[
                                               post.comments.length - 1
-                                          ].content.slice(0, 30) + ' ...'}
+                                          ].content.slice(0, 30)}
                                     {post.comments[post.comments.length - 1]
                                         .content.length > 30 && (
                                         <span
@@ -227,7 +253,7 @@ const SinglePost = ({ post }) => {
                                             className='ms-1 seemore'>
                                             {readMoreComment
                                                 ? 'Hide'
-                                                : 'See more'}
+                                                : '...See more'}
                                         </span>
                                     )}
                                 </span>

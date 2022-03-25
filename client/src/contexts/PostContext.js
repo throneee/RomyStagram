@@ -46,6 +46,21 @@ const PostContextProvider = ({ children }) => {
         postData: null,
     });
 
+    // 7. Modal action comment
+    const [showActionCommentModal, setShowActionCommentModal] = useState({
+        show: false,
+        commentData: null,
+    });
+
+    // 8. Edit Content comment
+    const [isEditComment, setIsEditComment] = useState({
+        show: false,
+        commentID: null,
+    });
+
+    // 9. Modal delete Comment
+    const [showDeleteCommentModal, setShowDeleteCommentModal] = useState(false);
+
     // ************************************* Function *************************************
 
     // 0. Find Post
@@ -209,6 +224,98 @@ const PostContextProvider = ({ children }) => {
         }
     };
 
+    // 8. Update comment
+    const updateComment = async (commentID, commentForm) => {
+        try {
+            const response = await axios.put(
+                `${apiURL}/comments/${commentID}`,
+                commentForm
+            );
+
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: response.data.post,
+                });
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
+        }
+    };
+
+    // 9. Delete comment
+    const deleteComment = async (commentID, commentForm) => {
+        try {
+            const response = await axios.delete(
+                `${apiURL}/comments/${commentID}`,
+                { data: commentForm }
+            );
+
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: response.data.post,
+                });
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
+        }
+    };
+
+    // 10. Like comment
+    const likeComment = async (commentID, commentData) => {
+        try {
+            const response = await axios.put(
+                `${apiURL}/comments/like/${commentID}`,
+                commentData
+            );
+
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: response.data.post,
+                });
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
+        }
+    };
+
+    // 10. UnLike comment
+    const unLikeComment = async (commentID, commentData) => {
+        try {
+            const response = await axios.put(
+                `${apiURL}/comments/unlike/${commentID}`,
+                commentData
+            );
+
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: response.data.post,
+                });
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
+        }
+    };
+
     // ************************************* Post Data *************************************
     const PostContextData = {
         postState,
@@ -222,6 +329,12 @@ const PostContextProvider = ({ children }) => {
         setShowDeletePostModal,
         showCommentModal,
         setShowCommentModal,
+        showActionCommentModal,
+        setShowActionCommentModal,
+        isEditComment,
+        setIsEditComment,
+        showDeleteCommentModal,
+        setShowDeleteCommentModal,
         createPost,
         getPosts,
         updatePost,
@@ -230,6 +343,10 @@ const PostContextProvider = ({ children }) => {
         likePost,
         unLikePost,
         commentPost,
+        updateComment,
+        deleteComment,
+        likeComment,
+        unLikeComment,
     };
 
     // ************************************* Return Provider *************************************

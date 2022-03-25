@@ -280,9 +280,18 @@
     background-color: rgb(243, 243, 243);
 }
 
-/* .comment-modal .carousel img {
-    height: 100%;
-} */
+/* 7. Single Comment */
+.edit-comment-input {
+    background-color: rgb(243, 243, 243);
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+.comment-right-icon:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
 
 /* ************** Tablet and Mobile ************** */
 @media (max-width: 1023px) {

@@ -8,7 +8,9 @@ import SinglePost from '../components/posts/SinglePost';
 import ActionModal from '../components/posts/ActionModal';
 import DeletePostModal from '../components/posts/DeletePostModal';
 import UnFollowModal from '../components/profile/UnFollowModal';
-import CommentModal from '../components/posts/CommentModal';
+import CommentModal from '../components/posts/comments/CommentModal';
+import ActionCommentModal from '../components/posts/comments/ActionCommentModal';
+import DeleteCommentModal from '../components/posts/comments/DeleteCommentModal';
 
 import { Spinner, Row, Col } from 'react-bootstrap';
 
@@ -82,6 +84,8 @@ const Home = () => {
             <DeletePostModal />
             <UnFollowModal />
             <CommentModal />
+            <ActionCommentModal />
+            <DeleteCommentModal />
         </>
     );
 };

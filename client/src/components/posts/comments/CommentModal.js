@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../contexts/UserContext';
-import { PostContext } from '../../contexts/PostContext';
-import CarouselPostImages from './CarouselPostImages';
+import { UserContext } from '../../../contexts/UserContext';
+import { PostContext } from '../../../contexts/PostContext';
+import CarouselPostImages from '../CarouselPostImages';
 import Comments from './Comments';
 import moment from 'moment';
 
@@ -10,15 +10,29 @@ import { Modal, Button, Image, Form } from 'react-bootstrap';
 
 const CommentModal = () => {
     // ************************************* State *************************************
-    const { setShowToast } = useContext(UserContext);
+    const {
+        userState: { user },
+        setShowToast,
+    } = useContext(UserContext);
 
     const {
         showCommentModal: { show, postData },
         setShowCommentModal,
+        likePost,
+        unLikePost,
         commentPost,
     } = useContext(PostContext);
 
     const [content, setContent] = useState('');
+
+    const [isLiked, setIsLiked] = useState(false);
+    useEffect(() => {
+        if (postData && postData.likes.find((like) => like._id === user._id)) {
+            setIsLiked(true);
+        } else {
+            setIsLiked(false);
+        }
+    }, [postData]);
 
     // ************************************* Function *************************************
     const closeModal = () => {
@@ -31,6 +45,19 @@ const CommentModal = () => {
         setContent(e.target.value);
     };
 
+    // like post
+    const handleLikePost = () => {
+        setIsLiked(true);
+        likePost(postData._id);
+    };
+
+    // unlike post
+    const handleUnLikePost = () => {
+        setIsLiked(false);
+        unLikePost(postData._id);
+    };
+
+    // create comment
     const handleComment = async (e) => {
         e.preventDefault();
 
@@ -97,7 +124,15 @@ const CommentModal = () => {
                     <Modal.Footer className='flex-start'>
                         <div className='post-interact d-flex justify-content-between w-100'>
                             <div>
-                                <i className='bi bi-suit-heart'></i>
+                                {isLiked ? (
+                                    <i
+                                        className='bi bi-suit-heart-fill text-danger'
+                                        onClick={handleUnLikePost}></i>
+                                ) : (
+                                    <i
+                                        className='bi bi-suit-heart'
+                                        onClick={handleLikePost}></i>
+                                )}
                                 <i className='bi bi-chat mx-4'></i>
                                 <i className='bi bi-send'></i>
                             </div>
