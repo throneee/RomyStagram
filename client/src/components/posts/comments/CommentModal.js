@@ -23,8 +23,10 @@ const CommentModal = () => {
         commentPost,
     } = useContext(PostContext);
 
+    // input content comment
     const [content, setContent] = useState('');
 
+    // check post liked or not
     const [isLiked, setIsLiked] = useState(false);
     useEffect(() => {
         if (postData && postData.likes.find((like) => like._id === user._id)) {
@@ -33,6 +35,14 @@ const CommentModal = () => {
             setIsLiked(false);
         }
     }, [postData]);
+
+    // check each comment have reply or not
+    const [replyComments, setReplyComments] = useState([]);
+    useEffect(() => {
+        const newRep =
+            postData && postData.comments.filter((comment) => comment.reply);
+        setReplyComments(newRep);
+    }, [postData && postData.comments]);
 
     // ************************************* Function *************************************
     const closeModal = () => {
@@ -69,6 +79,7 @@ const CommentModal = () => {
             postID: postData._id,
             content,
             createdAt: new Date().toISOString(),
+            postUserID: postData.user._id,
         });
 
         setShowToast({
@@ -87,6 +98,7 @@ const CommentModal = () => {
                 onHide={closeModal}
                 centered
                 className='comment-modal'>
+                {/* image post */}
                 <div className='flex-fill w-100 p-2'>
                     {postData.images.length > 1 ? (
                         <CarouselPostImages images={postData.images} />
@@ -97,7 +109,9 @@ const CommentModal = () => {
                     )}
                 </div>
 
+                {/* info post */}
                 <div className='flex-fill w-100 border-start d-flex flex-column'>
+                    {/* owner post info */}
                     <Modal.Header>
                         <Link
                             to={`/profile/${postData.user._id}`}
@@ -117,10 +131,25 @@ const CommentModal = () => {
                         <i className='bi bi-three-dots'></i>
                     </Modal.Header>
 
+                    {/* comment */}
                     <Modal.Body className='flex-fill'>
-                        <Comments comments={postData.comments} />
+                        {postData.comments.map((comment) => {
+                            return (
+                                <Comments
+                                    key={comment._id}
+                                    comment={comment}
+                                    replyComments={
+                                        replyComments &&
+                                        replyComments.filter(
+                                            (item) => item.reply === comment._id
+                                        )
+                                    }
+                                />
+                            );
+                        })}
                     </Modal.Body>
 
+                    {/* like post */}
                     <Modal.Footer className='flex-start'>
                         <div className='post-interact d-flex justify-content-between w-100'>
                             <div>
@@ -156,6 +185,7 @@ const CommentModal = () => {
                         </div>
                     </Modal.Footer>
 
+                    {/* input comment */}
                     <div className='post-comment d-flex px-3 py-2 border-top'>
                         <div>
                             <i className='bi bi-emoji-smile'></i>

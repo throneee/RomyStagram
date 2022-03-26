@@ -2,16 +2,25 @@ import React from 'react';
 
 import SingleComment from './SingleComment';
 
-const Comments = ({ comments }) => {
+const Comments = ({ comment, replyComments }) => {
     return (
         <>
-            {comments
-                .map((comment) => {
-                    return (
-                        <SingleComment key={comment._id} comment={comment} />
-                    );
-                })
-                .reverse()}
+            {!comment.reply && (
+                <SingleComment comment={comment} commentParentID={comment._id}>
+                    <div className='ms-5'>
+                        {replyComments &&
+                            replyComments.map((item, index) => {
+                                return (
+                                    <SingleComment
+                                        key={index}
+                                        comment={item}
+                                        commentParentID={comment._id}
+                                    />
+                                );
+                            })}
+                    </div>
+                </SingleComment>
+            )}
         </>
     );
 };

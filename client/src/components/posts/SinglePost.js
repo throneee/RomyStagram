@@ -95,6 +95,7 @@ const SinglePost = ({ post }) => {
             postID: post._id,
             content,
             createdAt: new Date().toISOString(),
+            postUserID: post.user._id,
         });
 
         setNewComment(true);

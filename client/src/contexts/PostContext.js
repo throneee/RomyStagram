@@ -248,13 +248,11 @@ const PostContextProvider = ({ children }) => {
     };
 
     // 9. Delete comment
-    const deleteComment = async (commentID, commentForm) => {
+    const deleteComment = async (commentID) => {
         try {
             const response = await axios.delete(
-                `${apiURL}/comments/${commentID}`,
-                { data: commentForm }
+                `${apiURL}/comments/${commentID}`
             );
-
             if (response.data.success) {
                 dispatch({
                     type: UPDATE_POST,

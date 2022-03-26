@@ -6,7 +6,7 @@ const Post = require('../models/PostModal');
 const commentController = {
     createComment: async (req, res) => {
         try {
-            const { postID, content, tag, reply } = req.body;
+            const { postID, content, tag, reply, postUserID } = req.body;
 
             if (!content) {
                 return res.status(400).json({
@@ -20,6 +20,8 @@ const commentController = {
                 content,
                 tag,
                 reply,
+                postID,
+                postUserID,
             });
 
             const newPost = await Post.findOneAndUpdate(
@@ -107,10 +109,9 @@ const commentController = {
     },
     deleteComment: async (req, res) => {
         try {
-            const { postID } = req.body;
-
             const deleteComment = await Comment.findOneAndDelete({
                 _id: req.params.id,
+                $or: [{ user: req.userID }, { postUserID: req.userID }],
             });
 
             if (!deleteComment) {
@@ -120,7 +121,15 @@ const commentController = {
                 });
             }
 
-            const newPost = await Post.find({ _id: postID })
+            const newPost = await Post.findOneAndUpdate(
+                {
+                    _id: deleteComment.postID,
+                },
+                {
+                    $pull: { comments: req.params.id },
+                },
+                { new: true }
+            )
                 .populate('user likes', 'username avatar')
                 .populate({
                     path: 'comments',
@@ -134,7 +143,7 @@ const commentController = {
                 success: true,
                 message: 'You have deleted comment.',
                 commentDelete: deleteComment,
-                post: newPost[0],
+                post: newPost,
             });
         } catch (error) {
             console.log(error);

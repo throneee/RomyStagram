@@ -22,9 +22,16 @@ const DeleteCommentModal = () => {
         setShowDeleteCommentModal(false);
     };
 
-    const handleDeleteComment = async () => {
-        await deleteComment(commentData._id, {
-            postID: postData._id,
+    const handleDeleteComment = () => {
+        const deleteCommentArray = [
+            ...postData.comments.filter(
+                (comment) => comment.reply === commentData._id
+            ),
+            commentData,
+        ];
+
+        deleteCommentArray.forEach(async (comment) => {
+            await deleteComment(comment._id);
         });
 
         setShowToast({

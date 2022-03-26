@@ -20,6 +20,8 @@
 
 .seemore {
     font-weight: 600;
+    font-size: 12px;
+    color: gray;
 }
 
 .seemore:hover {
@@ -281,8 +283,12 @@
 }
 
 /* 7. Single Comment */
-.edit-comment-input {
+.comment {
     background-color: rgb(243, 243, 243);
+}
+
+.edit-comment-input {
+    background-color: white;
     border: none;
     outline: none;
     resize: none;
@@ -291,6 +297,14 @@
 .comment-right-icon:hover {
     cursor: pointer;
     opacity: 0.5;
+}
+
+.comment .tag-name {
+    font-weight: 600;
+}
+
+.comment .tag-name:hover {
+    text-decoration: underline !important;
 }
 
 /* ************** Tablet and Mobile ************** */
@@ -303,6 +317,13 @@
 
     .add-post-modal textarea {
         height: 6em;
+    }
+
+    /* 2. Comment modal */
+    .comment-modal .modal-content {
+        flex-direction: column;
+        min-width: unset;
+        height: unset;
     }
 }
 
