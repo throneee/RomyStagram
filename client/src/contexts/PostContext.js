@@ -314,6 +314,22 @@ const PostContextProvider = ({ children }) => {
         }
     };
 
+    // 11. Get Post Detail
+    const getPostDetail = async (postID) => {
+        try {
+            const response = await axios.get(`${apiURL}/posts/${postID}`);
+
+            if (response.data.success) {
+                return response.data.post;
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
+        }
+    };
+
     // ************************************* Post Data *************************************
     const PostContextData = {
         postState,
@@ -345,6 +361,7 @@ const PostContextProvider = ({ children }) => {
         deleteComment,
         likeComment,
         unLikeComment,
+        getPostDetail,
     };
 
     // ************************************* Return Provider *************************************

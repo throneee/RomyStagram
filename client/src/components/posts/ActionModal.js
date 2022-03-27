@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { PostContext } from '../../contexts/PostContext';
 import { UserContext } from '../../contexts/UserContext';
 
@@ -18,6 +19,13 @@ const ActionModal = () => {
         setShowActionModal,
         setShowDeletePostModal,
     } = useContext(PostContext);
+
+    // clear state
+    useEffect(() => {
+        return () => {
+            setShowActionModal(false);
+        };
+    }, []);
 
     // ************************************* Function *************************************
     const closeModal = () => {
@@ -51,7 +59,9 @@ const ActionModal = () => {
             <Modal.Header className='p-0'>
                 {post && post.user._id === user._id ? (
                     <>
-                        <Button className='text-dark'>Go to post</Button>
+                        <Link to={`/post/${post._id}`} className='w-100'>
+                            <Button className='text-dark'>Go to post</Button>
+                        </Link>
                     </>
                 ) : (
                     <>
@@ -74,7 +84,13 @@ const ActionModal = () => {
                     </>
                 ) : (
                     <>
-                        <Button className='text-dark'>Go to post</Button>
+                        {post && (
+                            <Link to={`/post/${post._id}`} className='w-100'>
+                                <Button className='text-dark'>
+                                    Go to post
+                                </Button>
+                            </Link>
+                        )}
                     </>
                 )}
             </Modal.Header>

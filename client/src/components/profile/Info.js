@@ -4,7 +4,7 @@ import { UserContext } from '../../contexts/UserContext';
 
 import { Image, Button } from 'react-bootstrap';
 
-const Info = ({ userData, countPost }) => {
+const Info = ({ userData, postsCount }) => {
     // ************************************* State *************************************
     const { id } = useParams();
 
@@ -94,8 +94,8 @@ const Info = ({ userData, countPost }) => {
 
                 <div className='my-3'>
                     <span>
-                        <span className='fw-bolder'>{countPost}</span>{' '}
-                        {countPost > 1 ? 'posts' : 'post'}
+                        <span className='fw-bolder'>{postsCount}</span>{' '}
+                        {postsCount > 1 ? 'posts' : 'post'}
                     </span>
 
                     <span

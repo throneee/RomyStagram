@@ -23,10 +23,6 @@ const PostSchema = new Schema(
             },
         ],
         user: { type: Schema.Types.ObjectId, ref: 'users' },
-        createAt: {
-            type: Date,
-            default: Date.now(),
-        },
     },
     { timestamps: true }
 );

@@ -18,5 +18,9 @@ router.post('/like/:id', verifyToken, postController.likePost);
 
 router.post('/unlike/:id', verifyToken, postController.unLikePost);
 
+router.get('/user/:id', verifyToken, postController.getUserPost);
+
+router.get('/:id', verifyToken, postController.getPostDetail);
+
 // 3. Exports
 module.exports = router;

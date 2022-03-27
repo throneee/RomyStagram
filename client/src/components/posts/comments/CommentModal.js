@@ -44,6 +44,15 @@ const CommentModal = () => {
         setReplyComments(newRep);
     }, [postData && postData.comments]);
 
+    // clear state
+    useEffect(() => {
+        return () => {
+            setShowCommentModal({
+                show: false,
+            });
+        };
+    }, []);
+
     // ************************************* Function *************************************
     const closeModal = () => {
         setShowCommentModal({
@@ -128,7 +137,10 @@ const CommentModal = () => {
                             </h6>
                         </Link>
 
-                        <i className='bi bi-three-dots'></i>
+                        <i
+                            className='bi bi-x-lg'
+                            style={{ cursor: 'pointer' }}
+                            onClick={closeModal}></i>
                     </Modal.Header>
 
                     {/* comment */}

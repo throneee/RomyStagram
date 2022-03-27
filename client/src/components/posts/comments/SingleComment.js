@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { Image, Form, Button } from 'react-bootstrap';
 
-const SingleComment = ({ children, comment, commentParentID }) => {
+const SingleComment = ({ children, post, comment, commentParentID }) => {
     // ************************************* State *************************************
     const {
         userState: { user },
@@ -15,6 +15,7 @@ const SingleComment = ({ children, comment, commentParentID }) => {
 
     const {
         showCommentModal: { postData },
+        setShowCommentModal,
         setShowActionCommentModal,
         isEditComment,
         setIsEditComment,
@@ -39,6 +40,15 @@ const SingleComment = ({ children, comment, commentParentID }) => {
             setIsLiked(false);
         }
     }, []);
+
+    // set post datail
+    useEffect(() => {
+        if (post) {
+            setShowCommentModal({
+                postData: post,
+            });
+        }
+    }, [post]);
 
     // check on reply or not
     const [onReply, setOnReply] = useState(false);
@@ -111,7 +121,7 @@ const SingleComment = ({ children, comment, commentParentID }) => {
         setOnReply({ ...comment, commentParentID });
     };
 
-    //
+    // reply comment
     const handleReplyComment = async (e) => {
         e.preventDefault();
 

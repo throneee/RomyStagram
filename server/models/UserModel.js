@@ -67,10 +67,6 @@ const UserSchema = new Schema(
                 ref: 'users',
             },
         ],
-        createAt: {
-            type: Date,
-            default: Date.now(),
-        },
     },
     { timestamps: true }
 );

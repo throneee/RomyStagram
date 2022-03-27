@@ -226,6 +226,56 @@ const postController = {
                 .json({ success: false, message: 'Internal Server Error.' });
         }
     },
+    getUserPost: async (req, res) => {
+        try {
+            const userPosts = await Post.find({ user: req.params.id }).sort(
+                '-createdAt'
+            );
+
+            return res.json({
+                success: true,
+                message: 'Get posts of user successfully.',
+                postsCount: userPosts.length,
+                posts: userPosts,
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
+    getPostDetail: async (req, res) => {
+        try {
+            const post = await Post.findById(req.params.id)
+                .populate('user likes', 'username avatar')
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'user likes',
+                        select: '-password',
+                    },
+                });
+
+            if (!post) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Post not found.',
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: 'Get post successfully.',
+                post,
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
 };
 
 // 3. Export

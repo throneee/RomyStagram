@@ -6,6 +6,7 @@ import {
     LOCAL_STORAGE_TOKEN_NAME,
     SET_AUTH,
     UPDATE_USER,
+    GET_USER_POST,
 } from '../utils/contants';
 import setUserToken from '../utils/setUserToken';
 
@@ -19,6 +20,8 @@ const UserContextProvider = ({ children }) => {
         isLoading: true,
         isAuthenticated: false,
         user: null,
+        postOfUser: [],
+        postOfUserCount: null,
     });
 
     // 2. Modal Update User
@@ -176,7 +179,16 @@ const UserContextProvider = ({ children }) => {
         try {
             const response = await axios.get(`${apiURL}/user/${id}`);
 
-            if (response.data.success) {
+            const response1 = await axios.get(`${apiURL}/posts/user/${id}`);
+
+            if (response1.data.success) {
+                dispatch({
+                    type: GET_USER_POST,
+                    payload: {
+                        posts: response1.data.posts,
+                        postsCount: response1.data.postsCount,
+                    },
+                });
                 return response.data.user;
             }
         } catch (error) {

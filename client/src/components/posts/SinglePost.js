@@ -30,6 +30,7 @@ const SinglePost = ({ post }) => {
 
     const [content, setContent] = useState('');
 
+    // load like
     const [isLiked, setIsLiked] = useState(false);
     useEffect(() => {
         if (post.likes.find((like) => like._id === user._id)) {
@@ -39,7 +40,13 @@ const SinglePost = ({ post }) => {
         }
     }, [post]);
 
+    // pop up new comment created
     const [newComment, setNewComment] = useState(false);
+    useEffect(() => {
+        return () => {
+            setNewComment(false);
+        };
+    }, []);
 
     // ************************************* Function *************************************
     const onChangeContent = (e) => {
@@ -157,7 +164,9 @@ const SinglePost = ({ post }) => {
                             className='bi bi-suit-heart'
                             onClick={handleLikePost}></i>
                     )}
-                    <i className='bi bi-chat mx-4'></i>
+                    <Link to={`/post/${post._id}`} className='text-dark'>
+                        <i className='bi bi-chat mx-4'></i>
+                    </Link>
                     <i className='bi bi-send'></i>
                 </div>
 

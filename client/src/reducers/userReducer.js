@@ -1,9 +1,9 @@
-import { SET_AUTH, UPDATE_USER } from '../utils/contants';
+import { SET_AUTH, UPDATE_USER, GET_USER_POST } from '../utils/contants';
 
 export const userReducer = (state, action) => {
     const {
         type,
-        payload: { isAuthenticated, user },
+        payload: { isAuthenticated, user, posts, postsCount },
     } = action;
 
     switch (type) {
@@ -13,6 +13,12 @@ export const userReducer = (state, action) => {
                 isLoading: false,
                 isAuthenticated,
                 user,
+            };
+        case GET_USER_POST:
+            return {
+                ...state,
+                postOfUser: posts,
+                postOfUserCount: postsCount,
             };
         case UPDATE_USER: {
             return {

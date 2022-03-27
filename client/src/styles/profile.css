@@ -224,6 +224,24 @@
     box-shadow: none;
 }
 
+/* 6. Profile Posts */
+.profile-single-post:hover .profile-post-thumb {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.profile-post-thumb {
+    top: 0;
+    left: 0;
+    background-color: #0008;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.profile-post-thumb > div {
+    font-size: 24px;
+}
+
 /* ************** Tablet and Mobile ************** */
 @media (max-width: 1023px) {
 }

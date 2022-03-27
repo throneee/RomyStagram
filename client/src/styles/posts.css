@@ -269,6 +269,7 @@
     justify-content: center;
 }
 
+.post-detail-comments,
 .comment-modal .modal-body {
     height: 400px;
     overflow-y: auto;
@@ -305,6 +306,21 @@
 
 .comment .tag-name:hover {
     text-decoration: underline !important;
+}
+
+/* 8. Post Detail */
+.post-detail-left {
+    flex: 1;
+}
+
+.post-detail-right {
+    flex: 0.8;
+}
+
+.post-detail .carousel-item,
+.post-detail .carousel-inner,
+.post-detail .carousel {
+    height: 100%;
 }
 
 /* ************** Tablet and Mobile ************** */
