@@ -30,6 +30,7 @@ const UserContextProvider = ({ children }) => {
     // 3. Toast
     const [showToast, setShowToast] = useState({
         show: false,
+        type: '',
         message: '',
     });
 

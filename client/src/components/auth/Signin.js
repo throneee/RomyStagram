@@ -40,6 +40,7 @@ const Signin = () => {
 
             setShowToast({
                 show: true,
+                type: 'info',
                 message: 'Login Successfully.',
             });
         } catch (error) {

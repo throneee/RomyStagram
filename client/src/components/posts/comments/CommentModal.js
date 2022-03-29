@@ -65,15 +65,31 @@ const CommentModal = () => {
     };
 
     // like post
-    const handleLikePost = () => {
+    const handleLikePost = async () => {
+        const response = await likePost(postData._id);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
         setIsLiked(true);
-        likePost(postData._id);
     };
 
     // unlike post
-    const handleUnLikePost = () => {
+    const handleUnLikePost = async () => {
+        const response = await unLikePost(postData._id);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
         setIsLiked(false);
-        unLikePost(postData._id);
     };
 
     // create comment
@@ -84,15 +100,24 @@ const CommentModal = () => {
             return;
         }
 
-        await commentPost({
+        const response = await commentPost({
             postID: postData._id,
             content,
             createdAt: new Date().toISOString(),
             postUserID: postData.user._id,
         });
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
 
         setShowToast({
             show: true,
+            type: 'info',
             message: 'You have commented a post.',
         });
 

@@ -211,7 +211,7 @@ const userController = {
             if (!updatedUser) {
                 return res.status(401).json({
                     success: false,
-                    message: 'User not authorised or User not found.',
+                    message: 'User not found.',
                 });
             }
 

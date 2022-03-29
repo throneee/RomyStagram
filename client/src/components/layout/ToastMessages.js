@@ -10,7 +10,7 @@ const ToastMessages = () => {
         userState: {
             user: { _id, username, avatar },
         },
-        showToast: { show, message },
+        showToast: { show, type, message },
         setShowToast,
     } = useContext(UserContext);
 
@@ -18,7 +18,7 @@ const ToastMessages = () => {
     return (
         <Toast
             show={show}
-            className={`toast-messages shadow rounded-3 border border-1 border-info`}
+            className={`toast-messages shadow rounded-3 border border-1 border-${type}`}
             onClose={setShowToast.bind(this, {
                 show: false,
                 message: '',

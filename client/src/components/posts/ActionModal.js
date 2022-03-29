@@ -60,7 +60,9 @@ const ActionModal = () => {
                 {post && post.user._id === user._id ? (
                     <>
                         <Link to={`/post/${post._id}`} className='w-100'>
-                            <Button className='text-dark'>Go to post</Button>
+                            <Button className='text-dark' onClick={closeModal}>
+                                Go to post
+                            </Button>
                         </Link>
                     </>
                 ) : (
@@ -86,7 +88,9 @@ const ActionModal = () => {
                     <>
                         {post && (
                             <Link to={`/post/${post._id}`} className='w-100'>
-                                <Button className='text-dark'>
+                                <Button
+                                    className='text-dark'
+                                    onClick={closeModal}>
                                     Go to post
                                 </Button>
                             </Link>

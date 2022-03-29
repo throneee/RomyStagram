@@ -1,5 +1,6 @@
 // 1. Require
 const Post = require('../models/PostModal');
+const Comment = require('../models/CommentModal');
 
 // 2. Main
 const postController = {
@@ -14,6 +15,7 @@ const postController = {
                 });
             }
 
+            // create post
             const newPost = new Post({
                 content,
                 images,
@@ -36,6 +38,7 @@ const postController = {
     },
     getPosts: async (req, res) => {
         try {
+            // find posts
             const posts = await Post.find({
                 user: [...req.user.following, req.userID],
             })
@@ -48,6 +51,7 @@ const postController = {
                         select: '-password',
                     },
                 });
+
             return res.json({ success: true, posts });
         } catch (error) {
             console.log(error);
@@ -95,7 +99,7 @@ const postController = {
             if (!updatedPost) {
                 return res.status(401).json({
                     success: false,
-                    message: 'User not authorised or Post not found.',
+                    message: 'Post not found.',
                 });
             }
 
@@ -125,7 +129,11 @@ const postController = {
             if (!deletedPost) {
                 return res.status(401).json({
                     success: false,
-                    message: 'User not authorised or post not found.',
+                    message: 'Post not found.',
+                });
+            } else {
+                await Comment.deleteMany({
+                    _id: { $in: deletedPost.comments },
                 });
             }
 
@@ -171,6 +179,12 @@ const postController = {
                         select: '-password',
                     },
                 });
+            if (!newPost) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Post not found.',
+                });
+            }
 
             return res.json({
                 success: true,
@@ -214,6 +228,13 @@ const postController = {
                         select: '-password',
                     },
                 });
+            if (!newPost) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Post not found.',
+                });
+            }
+
             return res.json({
                 success: true,
                 message: 'UnLiked post.',
@@ -247,6 +268,7 @@ const postController = {
     },
     getPostDetail: async (req, res) => {
         try {
+            // find one post
             const post = await Post.findById(req.params.id)
                 .populate('user likes', 'username avatar')
                 .populate({
@@ -256,7 +278,6 @@ const postController = {
                         select: '-password',
                     },
                 });
-
             if (!post) {
                 return res.status(400).json({
                     success: false,

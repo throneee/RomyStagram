@@ -4,6 +4,7 @@ import {
     FIND_POST,
     UPDATE_POST,
     DELETE_POST,
+    DETAIL_POST,
 } from '../utils/contants';
 
 export const postReducer = (state, action) => {
@@ -15,6 +16,16 @@ export const postReducer = (state, action) => {
                 ...state,
                 post: payload,
             };
+        }
+        case DETAIL_POST: {
+            if (JSON.stringify(state.post) === JSON.stringify(payload)) {
+                return state;
+            } else {
+                return {
+                    ...state,
+                    post: payload,
+                };
+            }
         }
         case ADD_POST: {
             return {

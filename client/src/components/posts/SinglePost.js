@@ -60,15 +60,31 @@ const SinglePost = ({ post }) => {
     };
 
     // like post
-    const handleLikePost = () => {
+    const handleLikePost = async () => {
+        const response = await likePost(post._id);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
         setIsLiked(true);
-        likePost(post._id);
     };
 
     // unlike post
-    const handleUnLikePost = () => {
+    const handleUnLikePost = async () => {
+        const response = await unLikePost(post._id);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
         setIsLiked(false);
-        unLikePost(post._id);
     };
 
     // show comment modal
@@ -98,12 +114,20 @@ const SinglePost = ({ post }) => {
             return;
         }
 
-        await commentPost({
+        const response = await commentPost({
             postID: post._id,
             content,
             createdAt: new Date().toISOString(),
             postUserID: post.user._id,
         });
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
 
         setNewComment(true);
         setTimeout(() => {
@@ -112,6 +136,7 @@ const SinglePost = ({ post }) => {
 
         setShowToast({
             show: true,
+            type: 'info',
             message: 'You have commented a post.',
         });
 

@@ -31,11 +31,20 @@ const DeleteCommentModal = () => {
         ];
 
         deleteCommentArray.forEach(async (comment) => {
-            await deleteComment(comment._id);
+            const response = await deleteComment(comment._id);
+            if (!response.success) {
+                setShowToast({
+                    show: true,
+                    type: 'danger',
+                    message: response.message,
+                });
+                return;
+            }
         });
 
         setShowToast({
             show: true,
+            type: 'info',
             message: 'Comment is deleted.',
         });
 

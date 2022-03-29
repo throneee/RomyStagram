@@ -174,6 +174,7 @@ const AddPostModal = () => {
         // create successull
         setShowToast({
             show: true,
+            type: 'info',
             message: 'Create Post Successfully.',
         });
 

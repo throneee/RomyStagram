@@ -195,6 +195,7 @@ const UpdatePostModal = () => {
         // create successull
         setShowToast({
             show: true,
+            type: 'info',
             message: 'Post updated.',
         });
 

@@ -10,6 +10,7 @@ import {
     UPDATE_POST,
     FIND_POST,
     DELETE_POST,
+    DETAIL_POST,
 } from '../utils/contants';
 
 export const PostContext = createContext();
@@ -320,7 +321,11 @@ const PostContextProvider = ({ children }) => {
             const response = await axios.get(`${apiURL}/posts/${postID}`);
 
             if (response.data.success) {
-                return response.data.post;
+                dispatch({
+                    type: DETAIL_POST,
+                    payload: response.data.post,
+                });
+                return response.data;
             }
         } catch (error) {
             console.log(error.response.data);

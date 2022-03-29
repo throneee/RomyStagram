@@ -84,13 +84,22 @@ const SingleComment = ({ children, post, comment, commentParentID }) => {
 
     // update comment
     const handleUpdateComment = async () => {
-        await updateComment(comment._id, {
+        const response = await updateComment(comment._id, {
             postID: postData._id,
             content,
         });
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
 
         setShowToast({
             show: true,
+            type: 'info',
             message: 'You have updated comment.',
         });
 
@@ -98,19 +107,38 @@ const SingleComment = ({ children, post, comment, commentParentID }) => {
     };
 
     // like comment
-    const handleLikeComment = () => {
-        setIsLiked(true);
-        likeComment(comment._id, {
+    const handleLikeComment = async () => {
+        const response = await likeComment(comment._id, {
             postID: postData._id,
         });
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
+
+        setIsLiked(true);
     };
 
     // unlike comment
-    const handleUnLikeComment = () => {
-        setIsLiked(false);
-        unLikeComment(comment._id, {
+    const handleUnLikeComment = async () => {
+        const response = await unLikeComment(comment._id, {
             postID: postData._id,
         });
+
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
+
+        setIsLiked(false);
     };
 
     // show on reply
@@ -138,10 +166,19 @@ const SingleComment = ({ children, post, comment, commentParentID }) => {
             postUserID: postData.user._id,
         };
 
-        await commentPost(newReplyComment);
+        const response = await commentPost(newReplyComment);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
 
         setShowToast({
             show: true,
+            type: 'info',
             message: 'You have reply a comment in a post.',
         });
 

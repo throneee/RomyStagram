@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { PostContext } from '../../contexts/PostContext';
+import { useNavigate } from 'react-router-dom';
 
 import { Modal, Button } from 'react-bootstrap';
 
-const DeletePostModal = () => {
+const DeletePostModal = ({ path }) => {
     // ************************************* State *************************************
     const { setShowToast } = useContext(UserContext);
 
@@ -15,6 +16,8 @@ const DeletePostModal = () => {
         setShowDeletePostModal,
         deletePost,
     } = useContext(PostContext);
+
+    const navigate = useNavigate();
 
     // ************************************* Function *************************************
     const closeModal = () => {
@@ -27,11 +30,16 @@ const DeletePostModal = () => {
         await deletePost(post._id);
         setShowToast({
             show: true,
+            type: 'info',
             message: 'Post is deleted.',
         });
 
         setShowActionModal(false);
         closeModal();
+
+        if (path === 'post-detail') {
+            navigate('/home');
+        }
     };
 
     // ************************************* Return *************************************

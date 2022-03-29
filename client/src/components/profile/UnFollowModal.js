@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { PostContext } from '../../contexts/PostContext';
 import { UserContext } from '../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 import { Modal, Button, Image } from 'react-bootstrap';
 
-const UnFollowModal = () => {
+const UnFollowModal = ({ path }) => {
     // ************************************* State *************************************
     const { unFollowUser, showUnFollowModal, setShowUnFollowModal } =
         useContext(UserContext);
@@ -13,6 +14,8 @@ const UnFollowModal = () => {
         postState: { post },
         setShowActionModal,
     } = useContext(PostContext);
+
+    const navigate = useNavigate();
 
     // ************************************* Function *************************************
     const closeModal = () => {
@@ -30,6 +33,10 @@ const UnFollowModal = () => {
 
         setShowActionModal(false);
         closeModal();
+
+        if (path === 'post-detail') {
+            navigate('/home');
+        }
     };
 
     // ************************************* Return *************************************

@@ -9,6 +9,10 @@ import Comments from '../../components/posts/comments/Comments';
 import ActionCommentModal from '../../components/posts/comments/ActionCommentModal';
 import DeleteCommentModal from '../../components/posts/comments/DeleteCommentModal';
 import moment from 'moment';
+import ActionModal from '../../components/posts/ActionModal';
+import UpdatePostModal from '../../components/posts/UpdatePostModal';
+import DeletePostModal from '../../components/posts/DeletePostModal';
+import UnFollowModal from '../../components/profile/UnFollowModal';
 
 import { Image, Form, Button } from 'react-bootstrap';
 
@@ -19,20 +23,26 @@ const PostDetail = () => {
         setShowToast,
     } = useContext(UserContext);
 
-    const { likePost, unLikePost, getPostDetail, commentPost } =
-        useContext(PostContext);
-
-    const [post, setPost] = useState(null);
+    const {
+        postState: { posts, post },
+        setShowActionModal,
+        likePost,
+        unLikePost,
+        getPostDetail,
+        commentPost,
+    } = useContext(PostContext);
 
     const { id } = useParams();
 
+    // scrollTop when click in a link
     useEffect(() => {
-        const fetchPostData = async () => {
-            const postFetch = await getPostDetail(id);
-            setPost(postFetch);
-        };
-        fetchPostData();
-    }, [id, getPostDetail]);
+        window.scrollTo(0, 0);
+    }, []);
+
+    // get detail post when posts change
+    useEffect(async () => {
+        await getPostDetail(id);
+    }, [id, posts]);
 
     // check each comment have reply or not
     const [replyComments, setReplyComments] = useState([]);
@@ -59,16 +69,37 @@ const PostDetail = () => {
     };
 
     // ************************************* Function *************************************
+    // show action modal
+    const handleShowActionModal = () => {
+        setShowActionModal(true);
+    };
+
     // like post
-    const handleLikePost = () => {
+    const handleLikePost = async () => {
+        const response = await likePost(post._id);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
         setIsLiked(true);
-        likePost(post._id);
     };
 
     // unlike post
-    const handleUnLikePost = () => {
+    const handleUnLikePost = async () => {
+        const response = await unLikePost(post._id);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
         setIsLiked(false);
-        unLikePost(post._id);
     };
 
     // create comment
@@ -79,15 +110,24 @@ const PostDetail = () => {
             return;
         }
 
-        await commentPost({
+        const response = await commentPost({
             postID: post._id,
             content,
             createdAt: new Date().toISOString(),
             postUserID: post.user._id,
         });
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
 
         setShowToast({
             show: true,
+            type: 'info',
             message: 'You have commented a post.',
         });
 
@@ -132,27 +172,44 @@ const PostDetail = () => {
                                             </h6>
                                         </Link>
 
-                                        <i className='bi bi-three-dots'></i>
+                                        <i
+                                            className='bi bi-three-dots'
+                                            onClick={handleShowActionModal}
+                                            style={{ cursor: 'pointer' }}></i>
                                     </div>
 
                                     <div className='post-detail-comments px-3'>
-                                        {post.comments.map((comment) => {
-                                            return (
-                                                <Comments
-                                                    key={comment._id}
-                                                    post={post}
-                                                    comment={comment}
-                                                    replyComments={
-                                                        replyComments &&
-                                                        replyComments.filter(
-                                                            (item) =>
-                                                                item.reply ===
-                                                                comment._id
-                                                        )
-                                                    }
-                                                />
-                                            );
-                                        })}
+                                        {post.comments.length === 0 ? (
+                                            <div
+                                                className='h-100 d-flex flex-column justify-content-center align-items-center'
+                                                style={{ fontSize: '24px' }}>
+                                                <i className='bi bi-chat-dots'></i>
+                                                <span
+                                                    style={{
+                                                        fontStyle: 'italic',
+                                                    }}>
+                                                    No comment
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            post.comments.map((comment) => {
+                                                return (
+                                                    <Comments
+                                                        key={comment._id}
+                                                        post={post}
+                                                        comment={comment}
+                                                        replyComments={
+                                                            replyComments &&
+                                                            replyComments.filter(
+                                                                (item) =>
+                                                                    item.reply ===
+                                                                    comment._id
+                                                            )
+                                                        }
+                                                    />
+                                                );
+                                            })
+                                        )}
                                     </div>
 
                                     <div className='post-detail-info p-3 border-top'>
@@ -252,6 +309,10 @@ const PostDetail = () => {
 
             <ToastMessages />
             <AddPostModal />
+            <ActionModal />
+            <UpdatePostModal />
+            <DeletePostModal path='post-detail' />
+            <UnFollowModal path='post-detail' />
             <ActionCommentModal />
             <DeleteCommentModal />
         </>

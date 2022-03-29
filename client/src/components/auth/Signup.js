@@ -50,6 +50,7 @@ const Signup = () => {
 
             setShowToast({
                 show: true,
+                type: 'info',
                 message: 'Register Successfully.',
             });
         } catch (error) {

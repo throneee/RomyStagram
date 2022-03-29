@@ -15,6 +15,7 @@ const commentController = {
                 });
             }
 
+            // create comment
             const newComment = new Comment({
                 user: req.userID,
                 content,
@@ -24,6 +25,7 @@ const commentController = {
                 postUserID,
             });
 
+            // Update post
             const newPost = await Post.findOneAndUpdate(
                 { _id: postID },
                 {
@@ -39,6 +41,12 @@ const commentController = {
                         select: '-password',
                     },
                 });
+            if (!newPost) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Post not found.',
+                });
+            }
 
             await newComment.save();
 
@@ -66,6 +74,7 @@ const commentController = {
                 });
             }
 
+            // Update comment
             const updatedComment = await Comment.findOneAndUpdate(
                 {
                     _id: req.params.id,
@@ -76,7 +85,6 @@ const commentController = {
                 },
                 { new: true }
             );
-
             if (!updatedComment) {
                 return res.status(401).json({
                     success: false,
@@ -84,6 +92,7 @@ const commentController = {
                 });
             }
 
+            // Update post
             const newPost = await Post.find({ _id: postID })
                 .populate('user likes', 'username avatar')
                 .populate({
@@ -93,6 +102,12 @@ const commentController = {
                         select: '-password',
                     },
                 });
+            if (!newPost) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Post not found.',
+                });
+            }
 
             return res.json({
                 success: true,
@@ -109,18 +124,19 @@ const commentController = {
     },
     deleteComment: async (req, res) => {
         try {
+            // Delete comment
             const deleteComment = await Comment.findOneAndDelete({
                 _id: req.params.id,
                 $or: [{ user: req.userID }, { postUserID: req.userID }],
             });
-
             if (!deleteComment) {
                 return res.status(401).json({
                     success: false,
-                    message: 'Comment not found or Comment have been deleted.',
+                    message: 'Comment not found.',
                 });
             }
 
+            // Update post
             const newPost = await Post.findOneAndUpdate(
                 {
                     _id: deleteComment.postID,
@@ -138,6 +154,12 @@ const commentController = {
                         select: '-password',
                     },
                 });
+            if (!newPost) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Post not found.',
+                });
+            }
 
             return res.json({
                 success: true,
@@ -168,6 +190,7 @@ const commentController = {
                 });
             }
 
+            // Update comment
             const newComment = await Comment.findOneAndUpdate(
                 {
                     _id: req.params.id,
@@ -177,7 +200,14 @@ const commentController = {
                 },
                 { new: true }
             );
+            if (!newComment) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Comment not found.',
+                });
+            }
 
+            // Update post
             const newPost = await Post.find({ _id: postID })
                 .populate('user likes', 'username avatar')
                 .populate({
@@ -187,6 +217,12 @@ const commentController = {
                         select: '-password',
                     },
                 });
+            if (!newPost) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Post not found.',
+                });
+            }
 
             return res.json({
                 success: true,
@@ -217,6 +253,7 @@ const commentController = {
                 });
             }
 
+            // unlike comment
             const newComment = await Comment.findOneAndUpdate(
                 {
                     _id: req.params.id,
@@ -226,7 +263,14 @@ const commentController = {
                 },
                 { new: true }
             );
+            if (!newComment) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Comment not found.',
+                });
+            }
 
+            // update post
             const newPost = await Post.find({ _id: postID })
                 .populate('user likes', 'username avatar')
                 .populate({
@@ -236,6 +280,12 @@ const commentController = {
                         select: '-password',
                     },
                 });
+            if (!newPost) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Post not found.',
+                });
+            }
 
             return res.json({
                 success: true,
