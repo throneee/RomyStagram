@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PostContext } from '../../contexts/PostContext';
 import { UserContext } from '../../contexts/UserContext';
+import { BASE_URL } from '../../utils/contants';
 
 import { Modal, Button } from 'react-bootstrap';
 
@@ -10,6 +11,7 @@ const ActionModal = () => {
     const {
         userState: { user },
         setShowUnFollowModal,
+        setShowToast,
     } = useContext(UserContext);
 
     const {
@@ -44,6 +46,16 @@ const ActionModal = () => {
         setShowUnFollowModal({
             show: true,
         });
+    };
+
+    const handleCopyLink = () => {
+        navigator.clipboard.writeText(`${BASE_URL}/post/${post._id}`);
+        setShowToast({
+            show: true,
+            type: 'info',
+            message: 'Copy link to clipboard.',
+        });
+        closeModal();
     };
 
     // ************************************* Return *************************************
@@ -110,6 +122,12 @@ const ActionModal = () => {
             ) : (
                 <></>
             )}
+
+            <Modal.Header className='p-0'>
+                <Button className='text-dark' onClick={handleCopyLink}>
+                    Copy link
+                </Button>
+            </Modal.Header>
 
             <div>
                 <Button onClick={closeModal} className='text-dark'>

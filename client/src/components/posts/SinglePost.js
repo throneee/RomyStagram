@@ -4,6 +4,8 @@ import { PostContext } from '../../contexts/PostContext';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import CarouselPostImages from './CarouselPostImages';
+import SharePost from './SharePost';
+import { BASE_URL } from '../../utils/contants';
 
 import { Image, Form, Button } from 'react-bootstrap';
 
@@ -27,6 +29,8 @@ const SinglePost = ({ post }) => {
     const [readMore, setReadMore] = useState(false);
 
     const [readMoreComment, setReadMoreComment] = useState(false);
+
+    const [isShare, setIsShare] = useState(false);
 
     const [content, setContent] = useState('');
 
@@ -192,13 +196,22 @@ const SinglePost = ({ post }) => {
                     <Link to={`/post/${post._id}`} className='text-dark'>
                         <i className='bi bi-chat mx-4'></i>
                     </Link>
-                    <i className='bi bi-send'></i>
+
+                    <i
+                        className='bi bi-send'
+                        onClick={() => setIsShare(!isShare)}></i>
                 </div>
 
                 <div>
                     <i className='bi bi-bookmark'></i>
                 </div>
             </div>
+
+            {isShare && (
+                <div className='px-3'>
+                    <SharePost url={`${BASE_URL}/post/${post._id}`} />
+                </div>
+            )}
 
             <div className='px-3 mb-3'>
                 <p className='mb-0'>

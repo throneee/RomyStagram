@@ -13,6 +13,8 @@ import ActionModal from '../../components/posts/ActionModal';
 import UpdatePostModal from '../../components/posts/UpdatePostModal';
 import DeletePostModal from '../../components/posts/DeletePostModal';
 import UnFollowModal from '../../components/profile/UnFollowModal';
+import { BASE_URL } from '../../utils/contants';
+import SharePost from '../../components/posts/SharePost';
 
 import { Image, Form, Button } from 'react-bootstrap';
 
@@ -64,11 +66,13 @@ const PostDetail = () => {
     // input content comment
     const [content, setContent] = useState('');
 
+    const [isShare, setIsShare] = useState(false);
+
+    // ************************************* Function *************************************
     const onChangeContent = (e) => {
         setContent(e.target.value);
     };
 
-    // ************************************* Function *************************************
     // show action modal
     const handleShowActionModal = () => {
         setShowActionModal(true);
@@ -155,7 +159,7 @@ const PostDetail = () => {
                                     )}
                                 </div>
 
-                                <div className='post-detail-right border-start'>
+                                <div className='post-detail-right border-start d-flex flex-column'>
                                     <div className='post-detail-righ-top border-bottom d-flex align-items-center justify-content-between p-3'>
                                         <Link
                                             to={`/profile/${post.user._id}`}
@@ -178,7 +182,7 @@ const PostDetail = () => {
                                             style={{ cursor: 'pointer' }}></i>
                                     </div>
 
-                                    <div className='post-detail-comments px-3'>
+                                    <div className='post-detail-comments px-3 flex-fill overflow-auto'>
                                         {post.comments.length === 0 ? (
                                             <div
                                                 className='h-100 d-flex flex-column justify-content-center align-items-center'
@@ -229,13 +233,25 @@ const PostDetail = () => {
                                                         }></i>
                                                 )}
                                                 <i className='bi bi-chat mx-4'></i>
-                                                <i className='bi bi-send'></i>
+                                                <i
+                                                    className='bi bi-send'
+                                                    onClick={() =>
+                                                        setIsShare(!isShare)
+                                                    }></i>
                                             </div>
 
                                             <div>
                                                 <i className='bi bi-bookmark'></i>
                                             </div>
                                         </div>
+
+                                        {isShare && (
+                                            <div className='w-100 my-2'>
+                                                <SharePost
+                                                    url={`${BASE_URL}/post/${post._id}`}
+                                                />
+                                            </div>
+                                        )}
 
                                         <div className='w-100'>
                                             <h6 className='m-0'>

@@ -69,6 +69,14 @@
     font-size: 50px;
 }
 
+.share-post {
+    background-color: rgb(243, 243, 243);
+}
+
+.share-post > button:hover {
+    opacity: 0.8;
+}
+
 /* .home-right {
     flex: 0.55;
     padding-top: 52px;
@@ -269,7 +277,6 @@
     justify-content: center;
 }
 
-.post-detail-comments,
 .comment-modal .modal-body {
     height: 400px;
     overflow-y: auto;
@@ -309,6 +316,10 @@
 }
 
 /* 8. Post Detail */
+.post-detail {
+    height: 616px;
+}
+
 .post-detail-left {
     flex: 1;
 }

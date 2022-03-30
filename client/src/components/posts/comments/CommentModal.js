@@ -4,6 +4,8 @@ import { UserContext } from '../../../contexts/UserContext';
 import { PostContext } from '../../../contexts/PostContext';
 import CarouselPostImages from '../CarouselPostImages';
 import Comments from './Comments';
+import SharePost from '../SharePost';
+import { BASE_URL } from '../../../utils/contants';
 import moment from 'moment';
 
 import { Modal, Button, Image, Form } from 'react-bootstrap';
@@ -44,6 +46,8 @@ const CommentModal = () => {
         setReplyComments(newRep);
     }, [postData && postData.comments]);
 
+    const [isShare, setIsShare] = useState(false);
+
     // clear state
     useEffect(() => {
         return () => {
@@ -55,6 +59,8 @@ const CommentModal = () => {
 
     // ************************************* Function *************************************
     const closeModal = () => {
+        setIsShare(false);
+
         setShowCommentModal({
             show: false,
         });
@@ -199,14 +205,30 @@ const CommentModal = () => {
                                         className='bi bi-suit-heart'
                                         onClick={handleLikePost}></i>
                                 )}
-                                <i className='bi bi-chat mx-4'></i>
-                                <i className='bi bi-send'></i>
+
+                                <Link
+                                    to={`/post/${postData._id}`}
+                                    className='text-dark'>
+                                    <i className='bi bi-chat mx-4'></i>
+                                </Link>
+
+                                <i
+                                    className='bi bi-send'
+                                    onClick={() => setIsShare(!isShare)}></i>
                             </div>
 
                             <div>
                                 <i className='bi bi-bookmark'></i>
                             </div>
                         </div>
+
+                        {isShare && (
+                            <div className='w-100'>
+                                <SharePost
+                                    url={`${BASE_URL}/post/${postData._id}`}
+                                />
+                            </div>
+                        )}
 
                         <div className='w-100'>
                             <h6 className='m-0'>

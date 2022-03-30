@@ -3,6 +3,8 @@ export const apiURL =
         ? 'http://localhost:5000/api'
         : 'someURLdeploy';
 
+export const BASE_URL = 'http://localhost:3000';
+
 export const LOCAL_STORAGE_TOKEN_NAME = 'romy-stagram';
 
 export const SET_AUTH = 'SET_AUTH';
