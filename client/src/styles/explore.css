@@ -1,0 +1,18 @@
+.explore {
+    min-height: calc(100vh - 52px);
+}
+
+.btn-load-more {
+    background: none;
+    border: none;
+}
+
+.btn-load-more:hover,
+.btn-load-more:active,
+.btn-load-more:focus {
+    box-shadow: unset;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    opacity: 0.8;
+}

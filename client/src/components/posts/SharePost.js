@@ -7,8 +7,6 @@ import {
     FacebookIcon,
     LinkedinShareButton,
     LinkedinIcon,
-    PinterestShareButton,
-    PinterestIcon,
     RedditShareButton,
     RedditIcon,
     TelegramShareButton,
@@ -45,10 +43,6 @@ const SharePost = ({ url }) => {
             <LinkedinShareButton url={url}>
                 <LinkedinIcon round={true} size={32} />
             </LinkedinShareButton>
-
-            <PinterestShareButton url={url}>
-                <PinterestIcon round={true} size={32} />
-            </PinterestShareButton>
 
             <RedditShareButton url={url}>
                 <RedditIcon round={true} size={32} />

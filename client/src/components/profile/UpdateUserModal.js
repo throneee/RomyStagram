@@ -57,6 +57,7 @@ const UpdateUserModal = () => {
 
         setShowToast({
             show: true,
+            type: 'info',
             message: 'Profile update successfully.',
         });
 

@@ -20,6 +20,8 @@ router.post('/unlike/:id', verifyToken, postController.unLikePost);
 
 router.get('/user/:id', verifyToken, postController.getUserPost);
 
+router.get('/explore', verifyToken, postController.getPostExplore);
+
 router.get('/:id', verifyToken, postController.getPostDetail);
 
 // 3. Exports

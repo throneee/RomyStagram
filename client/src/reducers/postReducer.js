@@ -5,6 +5,7 @@ import {
     UPDATE_POST,
     DELETE_POST,
     DETAIL_POST,
+    GET_MORE_POSTS,
 } from '../utils/contants';
 
 export const postReducer = (state, action) => {
@@ -35,15 +36,25 @@ export const postReducer = (state, action) => {
             };
         }
         case GET_POSTS_SUCCESS: {
-            if (JSON.stringify(state.posts) === JSON.stringify(payload)) {
+            if (JSON.stringify(state.posts) === JSON.stringify(payload.posts)) {
                 return state;
             } else {
                 return {
                     ...state,
                     postLoading: false,
-                    posts: payload,
+                    posts: payload.posts,
+                    postsCount: payload.postsCount,
+                    firstLoad: true,
                 };
             }
+        }
+        case GET_MORE_POSTS: {
+            return {
+                ...state,
+                posts: payload.posts,
+                postsCount: payload.postsCount,
+                page: state.page + 1,
+            };
         }
         case UPDATE_POST: {
             const updatedPosts = state.posts.map((post) =>

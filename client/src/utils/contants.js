@@ -13,7 +13,11 @@ export const GET_USER_POST = 'GET_USER_POST';
 
 export const ADD_POST = 'ADD_POST';
 export const GET_POSTS_SUCCESS = 'GET_POSTS_SUCCESS';
+export const GET_MORE_POSTS = 'GET_MORE_POSTS';
 export const FIND_POST = 'FIND_POST';
 export const UPDATE_POST = 'UPDATE_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const DETAIL_POST = 'DETAIL_POST';
+
+export const GET_POSTS_EXPLORE = 'GET_POSTS_EXPLORE';
+export const GET_MORE_POSTS_EXPLORE = 'GET_MORE_POSTS_EXPLORE';

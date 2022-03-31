@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { PostContext } from '../../contexts/PostContext';
 import { UserContext } from '../../contexts/UserContext';
@@ -53,7 +53,7 @@ const ActionModal = () => {
         setShowToast({
             show: true,
             type: 'info',
-            message: 'Copy link to clipboard.',
+            message: 'Copied to clipboard.',
         });
         closeModal();
     };

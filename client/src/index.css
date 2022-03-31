@@ -35,3 +35,6 @@ code {
 
 /* --------------- POSTS --------------- */
 @import url(./styles/posts.css);
+
+/* --------------- EXPLORE --------------- */
+@import url(./styles/explore.css);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PostContext } from '../contexts/PostContext';
 import { UserContext } from '../contexts/UserContext';
 import ToastMessages from '../components/layout/ToastMessages';
@@ -11,6 +11,7 @@ import UnFollowModal from '../components/profile/UnFollowModal';
 import CommentModal from '../components/posts/comments/CommentModal';
 import ActionCommentModal from '../components/posts/comments/ActionCommentModal';
 import DeleteCommentModal from '../components/posts/comments/DeleteCommentModal';
+import LoadMoreBtn from '../components/posts/LoadMoreBtn';
 
 import { Spinner, Row, Col } from 'react-bootstrap';
 
@@ -21,15 +22,26 @@ const Home = () => {
     } = useContext(UserContext);
 
     const {
-        postState: { postLoading, posts },
+        postState: { postLoading, posts, postsCount, page, firstLoad },
         getPosts,
+        getMorePosts,
     } = useContext(PostContext);
 
+    const [loadMore, setLoadMore] = useState(false);
+
     useEffect(() => {
-        getPosts();
+        if (!firstLoad) {
+            getPosts();
+        }
     }, [posts, user]);
 
     // ************************************* Function and Variable declare *************************************
+    const handleLoadMore = async () => {
+        setLoadMore(true);
+        await getMorePosts(page);
+        setLoadMore(false);
+    };
+
     let body = null;
 
     if (postLoading) {
@@ -62,6 +74,21 @@ const Home = () => {
                         );
                     })}
                 </Row>
+
+                {loadMore && (
+                    <div className='text-center my-5 col-12 col-md-8'>
+                        <Spinner animation='border' variant='info' />
+                    </div>
+                )}
+
+                {!postLoading && (
+                    <LoadMoreBtn
+                        postsCount={postsCount}
+                        page={page}
+                        exploreLoading={loadMore}
+                        handleLoadMore={handleLoadMore}
+                    />
+                )}
             </div>
         );
     }

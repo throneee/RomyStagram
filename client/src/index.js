@@ -10,14 +10,17 @@ import reportWebVitals from './reportWebVitals';
 
 import UserContextProvider from './contexts/UserContext';
 import PostContextProvider from './contexts/PostContext';
+import ExploreContextProvider from './contexts/ExploreContext';
 import Loading from './components/layout/Loading';
 
 ReactDOM.render(
     <React.StrictMode>
         <UserContextProvider>
             <PostContextProvider>
-                <Loading />
-                <App />
+                <ExploreContextProvider>
+                    <Loading />
+                    <App />
+                </ExploreContextProvider>
             </PostContextProvider>
         </UserContextProvider>
     </React.StrictMode>,
