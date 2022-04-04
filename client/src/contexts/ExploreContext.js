@@ -1,11 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 import axios from 'axios';
 import { exploreReducer } from '../reducers/exploreReducer';
-import {
-    apiURL,
-    GET_MORE_POSTS_EXPLORE,
-    GET_POSTS_EXPLORE,
-} from '../utils/contants';
+import { apiURL, GET_POSTS_EXPLORE } from '../utils/contants';
 
 export const ExploreContext = createContext();
 
@@ -14,9 +10,6 @@ const ExploreContextProvider = ({ children }) => {
     const [exploreState, dispatch] = useReducer(exploreReducer, {
         exploreLoading: true,
         posts: [],
-        postsCount: 9,
-        page: 2,
-        firstLoad: false,
     });
 
     // ************************************* Function *************************************
@@ -27,34 +20,7 @@ const ExploreContextProvider = ({ children }) => {
             if (response.data.success) {
                 dispatch({
                     type: GET_POSTS_EXPLORE,
-                    payload: {
-                        posts: response.data.posts,
-                        postsCount: response.data.postsCount,
-                    },
-                });
-                return response.data;
-            }
-        } catch (error) {
-            console.log(error.response.data);
-            if (error.response.data) {
-                return error.response.data;
-            } else return { success: false, message: error.message };
-        }
-    };
-
-    const getMorePostsExplore = async (page) => {
-        try {
-            const response = await axios.get(
-                `${apiURL}/posts/explore?limit=${page * 9}`
-            );
-
-            if (response.data.success) {
-                dispatch({
-                    type: GET_MORE_POSTS_EXPLORE,
-                    payload: {
-                        posts: response.data.posts,
-                        postsCount: response.data.postsCount,
-                    },
+                    payload: response.data.posts,
                 });
                 return response.data;
             }
@@ -70,7 +36,6 @@ const ExploreContextProvider = ({ children }) => {
     const ExploreContextData = {
         exploreState,
         getPostsExplore,
-        getMorePostsExplore,
     };
 
     // ************************************* Return Provider *************************************

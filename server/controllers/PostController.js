@@ -2,21 +2,6 @@
 const Post = require('../models/PostModal');
 const Comment = require('../models/CommentModal');
 
-class APIfeatures {
-    constructor(query, queryString) {
-        this.query = query;
-        this.queryString = queryString;
-    }
-
-    paginating() {
-        const page = this.queryString.page * 1 || 1;
-        const limit = this.queryString.limit * 1 || 9;
-        const skip = (page - 1) * limit;
-        this.query = this.query.skip(skip).limit(limit);
-        return this;
-    }
-}
-
 // 2. Main
 const postController = {
     createPost: async (req, res) => {
@@ -53,15 +38,10 @@ const postController = {
     },
     getPosts: async (req, res) => {
         try {
-            const features = new APIfeatures(
-                Post.find({
-                    user: [...req.user.following, req.userID],
-                }),
-                req.query
-            ).paginating();
-
             // find posts
-            const posts = await features.query
+            const posts = await Post.find({
+                user: [...req.user.following, req.userID],
+            })
                 .sort('-createdAt')
                 .populate('user likes', 'username avatar')
                 .populate({
@@ -324,15 +304,10 @@ const postController = {
     },
     getPostExplore: async (req, res) => {
         try {
-            const features = new APIfeatures(
-                Post.find({
-                    user: { $nin: [...req.user.following, req.userID] },
-                }),
-                req.query
-            ).paginating();
-
             // find posts
-            const posts = await features.query.sort('-createdAt');
+            const posts = await Post.find({
+                user: { $nin: [...req.user.following, req.userID] },
+            }).sort('-createdAt');
 
             return res.json({
                 success: true,

@@ -11,7 +11,6 @@ import {
     FIND_POST,
     DELETE_POST,
     DETAIL_POST,
-    GET_MORE_POSTS,
 } from '../utils/contants';
 
 export const PostContext = createContext();
@@ -27,9 +26,6 @@ const PostContextProvider = ({ children }) => {
     const [postState, dispatch] = useReducer(postReducer, {
         postLoading: true,
         posts: [],
-        postsCount: 9,
-        page: 2,
-        firstLoad: false,
         post: null,
     });
 
@@ -112,30 +108,6 @@ const PostContextProvider = ({ children }) => {
                         postsCount: response.data.postsCount,
                     },
                 });
-            }
-        } catch (error) {
-            console.log(error.response.data);
-            if (error.response.data) {
-                return error.response.data;
-            } else return { success: false, message: error.message };
-        }
-    };
-
-    const getMorePosts = async (page) => {
-        try {
-            const response = await axios.get(
-                `${apiURL}/posts?limit=${page * 9}`
-            );
-
-            if (response.data.success) {
-                dispatch({
-                    type: GET_MORE_POSTS,
-                    payload: {
-                        posts: response.data.posts,
-                        postsCount: response.data.postsCount,
-                    },
-                });
-                return response.data;
             }
         } catch (error) {
             console.log(error.response.data);
@@ -387,7 +359,6 @@ const PostContextProvider = ({ children }) => {
         setShowDeleteCommentModal,
         createPost,
         getPosts,
-        getMorePosts,
         updatePost,
         deletePost,
         findPost,

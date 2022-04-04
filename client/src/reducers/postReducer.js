@@ -5,7 +5,6 @@ import {
     UPDATE_POST,
     DELETE_POST,
     DETAIL_POST,
-    GET_MORE_POSTS,
 } from '../utils/contants';
 
 export const postReducer = (state, action) => {
@@ -47,14 +46,6 @@ export const postReducer = (state, action) => {
                     firstLoad: true,
                 };
             }
-        }
-        case GET_MORE_POSTS: {
-            return {
-                ...state,
-                posts: payload.posts,
-                postsCount: payload.postsCount,
-                page: state.page + 1,
-            };
         }
         case UPDATE_POST: {
             const updatedPosts = state.posts.map((post) =>

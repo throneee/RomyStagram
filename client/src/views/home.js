@@ -11,7 +11,7 @@ import UnFollowModal from '../components/profile/UnFollowModal';
 import CommentModal from '../components/posts/comments/CommentModal';
 import ActionCommentModal from '../components/posts/comments/ActionCommentModal';
 import DeleteCommentModal from '../components/posts/comments/DeleteCommentModal';
-import LoadMoreBtn from '../components/posts/LoadMoreBtn';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import { Spinner, Row, Col } from 'react-bootstrap';
 
@@ -22,24 +22,44 @@ const Home = () => {
     } = useContext(UserContext);
 
     const {
-        postState: { postLoading, posts, postsCount, page, firstLoad },
+        postState: { postLoading, posts },
         getPosts,
-        getMorePosts,
     } = useContext(PostContext);
 
-    const [loadMore, setLoadMore] = useState(false);
-
     useEffect(() => {
-        if (!firstLoad) {
-            getPosts();
-        }
+        getPosts();
     }, [posts, user]);
 
+    const itemsPerPage = 10;
+    const [hasMoreItems, sethasMoreItems] = useState(true);
+    const [records, setrecords] = useState(itemsPerPage);
+
     // ************************************* Function and Variable declare *************************************
-    const handleLoadMore = async () => {
-        setLoadMore(true);
-        await getMorePosts(page);
-        setLoadMore(false);
+    const showPost = (posts) => {
+        var items = [];
+
+        for (var i = 0; i < records; i++) {
+            if (posts[i] === undefined) {
+                continue;
+            } else {
+                items.push(
+                    <Col key={i} className='mt-4'>
+                        <SinglePost post={posts[i]} />
+                    </Col>
+                );
+            }
+        }
+        return items;
+    };
+
+    const loadFunc = () => {
+        if (records >= posts.length) {
+            sethasMoreItems(false);
+        } else {
+            setTimeout(() => {
+                setrecords(records + itemsPerPage);
+            }, 1000);
+        }
     };
 
     let body = null;
@@ -65,30 +85,16 @@ const Home = () => {
     } else {
         body = (
             <div className='pb-4 col-12 col-md-8'>
-                <Row className='row-cols-1'>
-                    {posts.map((post) => {
-                        return (
-                            <Col key={post._id} className='mt-4'>
-                                <SinglePost post={post} />
-                            </Col>
-                        );
-                    })}
-                </Row>
-
-                {loadMore && (
-                    <div className='text-center my-5 col-12 col-md-8'>
-                        <Spinner animation='border' variant='info' />
-                    </div>
-                )}
-
-                {!postLoading && (
-                    <LoadMoreBtn
-                        postsCount={postsCount}
-                        page={page}
-                        exploreLoading={loadMore}
-                        handleLoadMore={handleLoadMore}
-                    />
-                )}
+                <InfiniteScroll
+                    loadMore={loadFunc}
+                    hasMore={hasMoreItems}
+                    loader={
+                        <div className='text-center loader mt-4' key={0}>
+                            <Spinner animation='border' variant='info' />
+                        </div>
+                    }>
+                    <Row className='row-cols-1'>{showPost(posts)}</Row>
+                </InfiniteScroll>
             </div>
         );
     }
