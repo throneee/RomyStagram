@@ -5,11 +5,15 @@ export const exploreReducer = (state, action) => {
 
     switch (type) {
         case GET_POSTS_EXPLORE: {
-            return {
-                ...state,
-                exploreLoading: false,
-                posts: payload,
-            };
+            if (JSON.stringify(state.posts) === JSON.stringify(payload)) {
+                return state;
+            } else {
+                return {
+                    ...state,
+                    exploreLoading: false,
+                    posts: payload,
+                };
+            }
         }
         default:
             return state;

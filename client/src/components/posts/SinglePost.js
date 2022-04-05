@@ -42,7 +42,7 @@ const SinglePost = ({ post }) => {
         } else {
             setIsLiked(false);
         }
-    }, [post]);
+    }, [post, user._id]);
 
     // pop up new comment created
     const [newComment, setNewComment] = useState(false);
@@ -101,14 +101,15 @@ const SinglePost = ({ post }) => {
     useEffect(() => {
         if (
             showCommentModal.postData &&
-            showCommentModal.postData._id === post._id
+            showCommentModal.postData._id === post._id &&
+            JSON.stringify(showCommentModal.postData) !== JSON.stringify(post)
         ) {
             setShowCommentModal({
                 ...showCommentModal,
                 postData: post,
             });
         }
-    }, [post]);
+    }, [post, showCommentModal, setShowCommentModal]);
 
     // create comment
     const handleComment = async (e) => {

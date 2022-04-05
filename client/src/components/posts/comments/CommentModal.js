@@ -36,7 +36,7 @@ const CommentModal = () => {
         } else {
             setIsLiked(false);
         }
-    }, [postData]);
+    }, [postData, user._id]);
 
     // check each comment have reply or not
     const [replyComments, setReplyComments] = useState([]);
@@ -44,7 +44,7 @@ const CommentModal = () => {
         const newRep =
             postData && postData.comments.filter((comment) => comment.reply);
         setReplyComments(newRep);
-    }, [postData && postData.comments]);
+    }, [postData]);
 
     const [isShare, setIsShare] = useState(false);
 
@@ -55,7 +55,7 @@ const CommentModal = () => {
                 show: false,
             });
         };
-    }, []);
+    }, [setShowCommentModal]);
 
     // ************************************* Function *************************************
     const closeModal = () => {

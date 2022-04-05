@@ -15,9 +15,12 @@ const Explore = () => {
         getPostsExplore,
     } = useContext(ExploreContext);
 
+    const [loading, setLoading] = useState(exploreLoading);
+
     useEffect(() => {
         getPostsExplore();
-    }, []);
+        setLoading(false);
+    }, [getPostsExplore]);
 
     const itemsPerPage = 9;
     const [hasMoreItems, sethasMoreItems] = useState(true);
@@ -85,7 +88,7 @@ const Explore = () => {
             <div className='content'>
                 <div className='content-body'>
                     <div className='explore d-flex flex-column justify-content-between align-items-center'>
-                        {exploreLoading ? (
+                        {loading ? (
                             <div className='text-center my-5'>
                                 <Spinner animation='border' variant='info' />
                             </div>

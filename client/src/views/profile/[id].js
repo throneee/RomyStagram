@@ -34,7 +34,7 @@ const Profile = () => {
             setUsersData([userFetch]);
         };
         fetchUserData();
-    }, [id, user, posts]);
+    }, [id, user, posts, getUser]);
 
     // ************************************* Return *************************************
     return (

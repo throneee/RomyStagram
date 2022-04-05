@@ -36,6 +36,8 @@ const Signup = () => {
             setTimeout(() => {
                 setAlertState(null);
             }, 5000);
+
+            setShowLoading(false);
             return;
         }
 

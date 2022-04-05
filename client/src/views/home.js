@@ -26,9 +26,12 @@ const Home = () => {
         getPosts,
     } = useContext(PostContext);
 
+    const [loading, setLoading] = useState(postLoading);
+
     useEffect(() => {
         getPosts();
-    }, [posts, user]);
+        setLoading(postLoading);
+    }, [posts, user, getPosts]);
 
     const itemsPerPage = 10;
     const [hasMoreItems, sethasMoreItems] = useState(true);
@@ -64,7 +67,7 @@ const Home = () => {
 
     let body = null;
 
-    if (postLoading) {
+    if (loading) {
         body = (
             <div className='text-center my-5 col-12 col-md-8'>
                 <Spinner animation='border' variant='info' />

@@ -39,7 +39,7 @@ const SingleComment = ({ children, post, comment, commentParentID }) => {
         } else {
             setIsLiked(false);
         }
-    }, []);
+    }, [comment, user._id]);
 
     // set post datail
     useEffect(() => {
@@ -48,7 +48,7 @@ const SingleComment = ({ children, post, comment, commentParentID }) => {
                 postData: post,
             });
         }
-    }, [post]);
+    }, [post, setShowCommentModal]);
 
     // check on reply or not
     const [onReply, setOnReply] = useState(false);

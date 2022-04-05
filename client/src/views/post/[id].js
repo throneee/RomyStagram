@@ -42,16 +42,19 @@ const PostDetail = () => {
     }, []);
 
     // get detail post when posts change
-    useEffect(async () => {
-        await getPostDetail(id);
-    }, [id, posts]);
+    useEffect(() => {
+        const fetchData = async () => {
+            await getPostDetail(id);
+        };
+        fetchData();
+    }, [id, posts, getPostDetail]);
 
     // check each comment have reply or not
     const [replyComments, setReplyComments] = useState([]);
     useEffect(() => {
         const newRep = post && post.comments.filter((comment) => comment.reply);
         setReplyComments(newRep);
-    }, [post && post.comments]);
+    }, [post]);
 
     // check post liked or not
     const [isLiked, setIsLiked] = useState(false);
@@ -61,7 +64,7 @@ const PostDetail = () => {
         } else {
             setIsLiked(false);
         }
-    }, [post]);
+    }, [post, user._id]);
 
     // input content comment
     const [content, setContent] = useState('');

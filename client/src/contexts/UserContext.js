@@ -165,7 +165,12 @@ const UserContextProvider = ({ children }) => {
             );
 
             if (response.data.success) {
-                setUsersSearch(response.data.users);
+                if (
+                    JSON.stringify(usersSearch) !==
+                    JSON.stringify(response.data.users)
+                ) {
+                    setUsersSearch(response.data.users);
+                }
             }
         } catch (error) {
             console.log(error.response.data);

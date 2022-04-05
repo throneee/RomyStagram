@@ -27,7 +27,7 @@ const ActionModal = () => {
         return () => {
             setShowActionModal(false);
         };
-    }, []);
+    }, [setShowActionModal]);
 
     // ************************************* Function *************************************
     const closeModal = () => {

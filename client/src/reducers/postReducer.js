@@ -42,8 +42,6 @@ export const postReducer = (state, action) => {
                     ...state,
                     postLoading: false,
                     posts: payload.posts,
-                    postsCount: payload.postsCount,
-                    firstLoad: true,
                 };
             }
         }

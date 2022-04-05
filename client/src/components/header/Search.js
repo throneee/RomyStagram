@@ -15,7 +15,7 @@ const Search = () => {
         if (search) {
             searchUser(search);
         }
-    }, [search]);
+    }, [search, searchUser]);
 
     // ************************************* Function *************************************
     const handleClose = () => {
