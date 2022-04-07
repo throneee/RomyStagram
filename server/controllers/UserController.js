@@ -324,6 +324,46 @@ const userController = {
             });
         }
     },
+
+    suggestionUser: async (req, res) => {
+        try {
+            const newArr = [...req.user.following, req.user._id];
+            const num = req.query.num || 5;
+
+            const users = await User.aggregate([
+                { $match: { _id: { $nin: newArr } } },
+                { $sample: { size: Number(num) } },
+                {
+                    $lookup: {
+                        from: 'user',
+                        localField: 'followers',
+                        foreignField: '_id',
+                        as: 'followers',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'user',
+                        localField: 'following',
+                        foreignField: '_id',
+                        as: 'following',
+                    },
+                },
+            ]).project('-password');
+
+            return res.json({
+                success: true,
+                users,
+                usersCount: users.length,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal Server Error.',
+            });
+        }
+    },
 };
 
 // 3. Export

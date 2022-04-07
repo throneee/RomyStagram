@@ -242,6 +242,46 @@
     font-size: 24px;
 }
 
+/* 7. Suggestion User */
+.home-right {
+    padding-top: 50px;
+    height: 500px;
+    position: sticky;
+    top: 60px;
+}
+
+.home-right-profileName {
+    color: #333;
+    text-decoration: none;
+}
+
+.home-right-profileName:hover {
+    color: #333;
+    opacity: 0.8;
+}
+
+.home-right-top button {
+    background: none;
+    color: rgb(38, 164, 247);
+    border: none;
+    letter-spacing: -1px;
+    font-size: 14px;
+}
+
+.home-right-top button:focus,
+.home-right-top button:hover {
+    background: none;
+    color: rgb(38, 164, 247);
+    opacity: 0.8;
+    box-shadow: none;
+}
+
+.home-right-bottom {
+    font-size: 12px;
+    color: lightgray;
+    font-weight: 600;
+}
+
 /* ************** Tablet and Mobile ************** */
 @media (max-width: 1023px) {
 }

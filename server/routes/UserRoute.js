@@ -14,6 +14,8 @@ router.post('/signin', userController.signIn);
 
 router.get('/search', verifyToken, userController.searchUser);
 
+router.get('/suggestion', verifyToken, userController.suggestionUser);
+
 router.get('/:id', verifyToken, userController.getUser);
 
 router.put('/update/:id', verifyToken, userController.updateUser);

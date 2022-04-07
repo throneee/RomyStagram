@@ -14,11 +14,13 @@ import DeleteCommentModal from '../components/posts/comments/DeleteCommentModal'
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { Spinner, Row, Col } from 'react-bootstrap';
+import SuggestionUser from '../components/profile/SuggestionUser';
 
 const Home = () => {
     // ************************************* State *************************************
     const {
         userState: { user },
+        suggestionUser,
     } = useContext(UserContext);
 
     const {
@@ -28,10 +30,22 @@ const Home = () => {
 
     const [loading, setLoading] = useState(postLoading);
 
+    const [usersSuggestion, setUsersSuggestion] = useState([]);
+    const [usersSuggestionCount, setUsersSuggestionCount] = useState(0);
+
     useEffect(() => {
         getPosts();
         setLoading(postLoading);
     }, [posts, user, getPosts]);
+
+    useEffect(() => {
+        const fetchUserSuggestion = async () => {
+            const userFetch = await suggestionUser();
+            setUsersSuggestion([userFetch.users]);
+            setUsersSuggestionCount(userFetch.usersCount);
+        };
+        fetchUserSuggestion();
+    }, [suggestionUser]);
 
     const itemsPerPage = 10;
     const [hasMoreItems, sethasMoreItems] = useState(true);
@@ -109,7 +123,12 @@ const Home = () => {
                 <div className='content-body row'>
                     {body}
 
-                    <div className='col-0 col-md-4'></div>
+                    <div className='home-right d-none d-md-block col-md-4'>
+                        <SuggestionUser
+                            suggestionUser={usersSuggestion[0]}
+                            usersSuggestionCount={usersSuggestionCount}
+                        />
+                    </div>
                 </div>
             </div>
 

@@ -270,6 +270,20 @@ const UserContextProvider = ({ children }) => {
         }
     };
 
+    // 10. Suggestion User
+    const suggestionUser = async () => {
+        try {
+            const response = await axios.get(`${apiURL}/user/suggestion`);
+
+            return response.data;
+        } catch (error) {
+            console.log(error.response.data);
+            return error.response.data
+                ? error.response.data
+                : { success: false, message: 'Internal Server Error' };
+        }
+    };
+
     // ************************************* User Data *************************************
     const userContextData = {
         userState,
@@ -292,6 +306,7 @@ const UserContextProvider = ({ children }) => {
         updateUser,
         followUser,
         unFollowUser,
+        suggestionUser,
         signUp,
         signIn,
         logout,
