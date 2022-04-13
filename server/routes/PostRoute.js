@@ -22,7 +22,13 @@ router.get('/user/:id', verifyToken, postController.getUserPost);
 
 router.get('/explore', verifyToken, postController.getPostExplore);
 
+router.get('/savedpost', verifyToken, postController.getUserSavedPost);
+
 router.get('/:id', verifyToken, postController.getPostDetail);
+
+router.post('/saved/:id', verifyToken, postController.savedPost);
+
+router.post('/unsaved/:id', verifyToken, postController.unSavedPost);
 
 // 3. Exports
 module.exports = router;

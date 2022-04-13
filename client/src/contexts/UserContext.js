@@ -7,6 +7,7 @@ import {
     SET_AUTH,
     UPDATE_USER,
     GET_USER_POST,
+    GET_USER_SAVED_POST,
 } from '../utils/contants';
 import setUserToken from '../utils/setUserToken';
 
@@ -21,7 +22,9 @@ const UserContextProvider = ({ children }) => {
         isAuthenticated: false,
         user: null,
         postOfUser: [],
-        postOfUserCount: null,
+        postOfUserCount: 0,
+        postSavedOfUser: [],
+        postSavedOfUserCount: 0,
     });
 
     // 2. Modal Update User
@@ -187,7 +190,9 @@ const UserContextProvider = ({ children }) => {
 
             const response1 = await axios.get(`${apiURL}/posts/user/${id}`);
 
-            if (response1.data.success) {
+            const response2 = await axios.get(`${apiURL}/posts/savedpost`);
+
+            if (response1.data.success && response2.data.success) {
                 dispatch({
                     type: GET_USER_POST,
                     payload: {
@@ -195,6 +200,15 @@ const UserContextProvider = ({ children }) => {
                         postsCount: response1.data.postsCount,
                     },
                 });
+
+                dispatch({
+                    type: GET_USER_SAVED_POST,
+                    payload: {
+                        postSavedOfUser: response2.data.posts,
+                        postSavedOfUserCount: response2.data.postsCount,
+                    },
+                });
+
                 return response.data.user;
             }
         } catch (error) {
@@ -284,6 +298,50 @@ const UserContextProvider = ({ children }) => {
         }
     };
 
+    // 12. Saved Post
+    const savedPost = async (postID) => {
+        try {
+            const response = await axios.post(
+                `${apiURL}/posts/saved/${postID}`
+            );
+
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_USER,
+                    payload: { user: response.data.user },
+                });
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
+        }
+    };
+
+    // 13. Unsaved Post
+    const unSavedPost = async (postID) => {
+        try {
+            const response = await axios.post(
+                `${apiURL}/posts/unsaved/${postID}`
+            );
+
+            if (response.data.success) {
+                dispatch({
+                    type: UPDATE_USER,
+                    payload: { user: response.data.user },
+                });
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error.response.data);
+            if (error.response.data) {
+                return error.response.data;
+            } else return { success: false, message: error.message };
+        }
+    };
+
     // ************************************* User Data *************************************
     const userContextData = {
         userState,
@@ -307,6 +365,8 @@ const UserContextProvider = ({ children }) => {
         followUser,
         unFollowUser,
         suggestionUser,
+        savedPost,
+        unSavedPost,
         signUp,
         signIn,
         logout,

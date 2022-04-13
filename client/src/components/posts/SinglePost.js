@@ -13,6 +13,8 @@ const SinglePost = ({ post }) => {
     // ************************************* State *************************************
     const {
         userState: { user },
+        savedPost,
+        unSavedPost,
         setShowToast,
     } = useContext(UserContext);
 
@@ -52,6 +54,16 @@ const SinglePost = ({ post }) => {
         };
     }, []);
 
+    // load saved
+    const [isSaved, setIsSaved] = useState(false);
+    useEffect(() => {
+        if (user.saved.find((id) => id === post._id)) {
+            setIsSaved(true);
+        } else {
+            setIsSaved(false);
+        }
+    }, [post, user]);
+
     // ************************************* Function *************************************
     const onChangeContent = (e) => {
         setContent(e.target.value);
@@ -89,6 +101,35 @@ const SinglePost = ({ post }) => {
             return;
         }
         setIsLiked(false);
+    };
+
+    // saved post
+    const handleSavedPost = async () => {
+        const response = await savedPost(post._id);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
+
+        setIsSaved(true);
+    };
+
+    // Unsaved post
+    const handleUnSavedPost = async () => {
+        const response = await unSavedPost(post._id);
+        if (!response.success) {
+            setShowToast({
+                show: true,
+                type: 'danger',
+                message: response.message,
+            });
+            return;
+        }
+        setIsSaved(false);
     };
 
     // show comment modal
@@ -204,7 +245,15 @@ const SinglePost = ({ post }) => {
                 </div>
 
                 <div>
-                    <i className='bi bi-bookmark'></i>
+                    {isSaved ? (
+                        <i
+                            className='bi bi-bookmark-fill text-info'
+                            onClick={handleUnSavedPost}></i>
+                    ) : (
+                        <i
+                            className='bi bi-bookmark'
+                            onClick={handleSavedPost}></i>
+                    )}
                 </div>
             </div>
 

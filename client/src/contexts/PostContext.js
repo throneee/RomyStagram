@@ -5,6 +5,7 @@ import { postReducer } from '../reducers/postReducer';
 
 import {
     apiURL,
+    UPDATE_USER,
     ADD_POST,
     GET_POSTS_SUCCESS,
     UPDATE_POST,

@@ -67,6 +67,12 @@ const UserSchema = new Schema(
                 ref: 'users',
             },
         ],
+        saved: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'posts',
+            },
+        ],
     },
     { timestamps: true }
 );

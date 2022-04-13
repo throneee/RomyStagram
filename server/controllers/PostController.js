@@ -1,6 +1,7 @@
 // 1. Require
 const Post = require('../models/PostModal');
 const Comment = require('../models/CommentModal');
+const User = require('../models/UserModel');
 
 // 2. Main
 const postController = {
@@ -314,6 +315,113 @@ const postController = {
                 message: 'Get posts explore successfully.',
                 postsCount: posts.length,
                 posts,
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
+    savedPost: async (req, res) => {
+        try {
+            // Check post is saved or not
+            const postSaved = await User.find({
+                _id: req.userID,
+                saved: req.params.id,
+            });
+            if (postSaved.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'You saved this post.',
+                });
+            }
+
+            // Saved post
+            const newUser = await User.findOneAndUpdate(
+                { _id: req.userID },
+                {
+                    $push: { saved: req.params.id },
+                },
+                { new: true }
+            );
+            if (!newUser) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'User not found.',
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: 'Saved post.',
+                user: newUser,
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
+    unSavedPost: async (req, res) => {
+        try {
+            // Check post is unliked or not
+            const postSaved = await User.find({
+                _id: req.userID,
+                saved: req.params.id,
+            });
+            if (postSaved.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'You did not save this post.',
+                });
+            }
+
+            // Update post is liked
+            const newUser = await User.findOneAndUpdate(
+                { _id: req.userID },
+                {
+                    $pull: { saved: req.params.id },
+                },
+                { new: true }
+            );
+            if (!newUser) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'User not found.',
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: 'Unsaved post.',
+                user: newUser,
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .json({ success: false, message: 'Internal Server Error.' });
+        }
+    },
+    getUserSavedPost: async (req, res) => {
+        try {
+            const userSavedPosts = await Post.find({
+                _id: { $in: req.user.saved },
+            });
+            if (!userSavedPosts) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'You did not save posts.',
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: 'Get saved post successfully.',
+                postsCount: userSavedPosts.length,
+                posts: userSavedPosts,
             });
         } catch (error) {
             console.log(error);

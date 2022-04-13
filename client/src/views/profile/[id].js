@@ -12,11 +12,18 @@ import UnFollowModal from '../../components/profile/UnFollowModal';
 import PostOfUser from '../../components/profile/PostOfUser';
 
 import { Button } from 'react-bootstrap';
+import SavedPostOfUser from '../../components/profile/SavedPostOfUser';
 
 const Profile = () => {
     // ************************************* State *************************************
     const {
-        userState: { user, postOfUser, postOfUserCount },
+        userState: {
+            user,
+            postOfUser,
+            postOfUserCount,
+            postSavedOfUser,
+            postSavedOfUserCount,
+        },
         getUser,
     } = useContext(UserContext);
 
@@ -35,6 +42,8 @@ const Profile = () => {
         };
         fetchUserData();
     }, [id, user, posts, getUser]);
+
+    const [saveTab, setSaveTab] = useState(false);
 
     // ************************************* Return *************************************
     return (
@@ -58,17 +67,42 @@ const Profile = () => {
 
                                 <div className='profile-middle border-top'>
                                     <div className='profile-middle-top text-center'>
-                                        <Button className='text-dark border-top border-secondary py-3'>
+                                        <Button
+                                            className={
+                                                saveTab
+                                                    ? 'text-dark border-secondary py-3 me-4'
+                                                    : 'text-dark border-top border-secondary py-3 me-4'
+                                            }
+                                            onClick={() => setSaveTab(false)}>
                                             <i className='bi bi-table me-2'></i>
                                             Posts
+                                        </Button>
+                                        <Button
+                                            className={
+                                                saveTab
+                                                    ? 'text-dark border-top border-secondary py-3 ms-4'
+                                                    : 'text-dark border-secondary py-3 ms-4'
+                                            }
+                                            onClick={() => setSaveTab(true)}>
+                                            <i className='bi bi-bookmark me-2'></i>
+                                            Saved
                                         </Button>
                                     </div>
 
                                     <div className='profile-middle-bottom'>
-                                        <PostOfUser
-                                            posts={postOfUser}
-                                            postsCount={postOfUserCount}
-                                        />
+                                        {saveTab ? (
+                                            <SavedPostOfUser
+                                                posts={postSavedOfUser}
+                                                postsCount={
+                                                    postSavedOfUserCount
+                                                }
+                                            />
+                                        ) : (
+                                            <PostOfUser
+                                                posts={postOfUser}
+                                                postsCount={postOfUserCount}
+                                            />
+                                        )}
                                     </div>
                                 </div>
 
