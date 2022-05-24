@@ -1,5 +1,12 @@
-import React, { createContext, useReducer, useEffect, useState } from 'react';
+import React, {
+    createContext,
+    useReducer,
+    useEffect,
+    useState,
+    useContext,
+} from 'react';
 import axios from 'axios';
+import { SocketContext } from './SocketContext';
 import { userReducer } from '../reducers/userReducer';
 import {
     apiURL,
@@ -15,12 +22,13 @@ export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
     // ************************************* State *************************************
-
+    const { socket } = useContext(SocketContext);
     // 1. Main User
     const [userState, dispatch] = useReducer(userReducer, {
         isLoading: true,
         isAuthenticated: false,
         user: null,
+        socket: null,
         postOfUser: [],
         postOfUserCount: 0,
         postSavedOfUser: [],
@@ -247,6 +255,8 @@ const UserContextProvider = ({ children }) => {
         try {
             const response = await axios.post(`${apiURL}/user/follow/${id}`);
 
+            socket.emit('FollowUser', response.data.userIsFollowed[0]);
+
             if (response.data.success) {
                 dispatch({
                     type: UPDATE_USER,
@@ -267,6 +277,8 @@ const UserContextProvider = ({ children }) => {
     const unFollowUser = async (id) => {
         try {
             const response = await axios.post(`${apiURL}/user/unfollow/${id}`);
+
+            socket.emit('UnFollowUser', response.data.userIsUnFollowed[0]);
 
             if (response.data.success) {
                 dispatch({

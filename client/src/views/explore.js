@@ -107,6 +107,7 @@ const Explore = () => {
                         ) : (
                             <>
                                 <InfiniteScroll
+                                    className='w-100'
                                     loadMore={loadFunc}
                                     hasMore={hasMoreItems}
                                     loader={

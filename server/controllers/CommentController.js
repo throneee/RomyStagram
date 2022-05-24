@@ -1,6 +1,6 @@
 // 1. Require
-const Comment = require('../models/CommentModal');
-const Post = require('../models/PostModal');
+const Comment = require('../models/CommentModel');
+const Post = require('../models/PostModel');
 
 // 2. Main
 const commentController = {
@@ -25,6 +25,8 @@ const commentController = {
                 postUserID,
             });
 
+            await newComment.save();
+
             // Update post
             const newPost = await Post.findOneAndUpdate(
                 { _id: postID },
@@ -33,7 +35,7 @@ const commentController = {
                 },
                 { new: true }
             )
-                .populate('user likes', 'username avatar')
+                .populate('user likes', 'username avatar followers')
                 .populate({
                     path: 'comments',
                     populate: {
@@ -47,8 +49,6 @@ const commentController = {
                     message: 'Post not found.',
                 });
             }
-
-            await newComment.save();
 
             return res.json({
                 success: true,
@@ -146,7 +146,7 @@ const commentController = {
                 },
                 { new: true }
             )
-                .populate('user likes', 'username avatar')
+                .populate('user likes', 'username avatar followers')
                 .populate({
                     path: 'comments',
                     populate: {

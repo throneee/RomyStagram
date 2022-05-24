@@ -1,11 +1,12 @@
 import React, { createContext, useReducer, useState, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from './UserContext';
+import { SocketContext } from './SocketContext';
+import { NotifyContext } from './NotifyContext';
 import { postReducer } from '../reducers/postReducer';
 
 import {
     apiURL,
-    UPDATE_USER,
     ADD_POST,
     GET_POSTS_SUCCESS,
     UPDATE_POST,
@@ -18,6 +19,10 @@ export const PostContext = createContext();
 
 const PostContextProvider = ({ children }) => {
     // ************************************* State *************************************
+    const { socket } = useContext(SocketContext);
+
+    const { createNotify, deleteNotify } = useContext(NotifyContext);
+
     // 0. Use userContext
     const {
         userState: { user },
@@ -80,6 +85,15 @@ const PostContextProvider = ({ children }) => {
     const createPost = async (addPostForm) => {
         try {
             const response = await axios.post(`${apiURL}/posts`, addPostForm);
+
+            await createNotify({
+                postID: response.data.post._id,
+                text: 'added a new post: ',
+                recipients: user.followers,
+                url: `/post/${response.data.post._id}`,
+                content: response.data.post.content,
+                image: response.data.post.images[0].url,
+            });
 
             if (response.data.success) {
                 dispatch({
@@ -148,6 +162,11 @@ const PostContextProvider = ({ children }) => {
                 `${apiURL}/posts/delete/${postID}`
             );
 
+            await deleteNotify(
+                response.data.post._id,
+                `/post/${response.data.post._id}`
+            );
+
             if (response.data.success) {
                 dispatch({
                     type: DELETE_POST,
@@ -168,6 +187,19 @@ const PostContextProvider = ({ children }) => {
     const likePost = async (postID) => {
         try {
             const response = await axios.post(`${apiURL}/posts/like/${postID}`);
+
+            socket.emit('LikePost', response.data.post);
+
+            if (user._id !== response.data.post.user._id) {
+                await createNotify({
+                    postID: user._id,
+                    text: 'like your post.',
+                    recipients: [response.data.post.user._id],
+                    url: `/post/${response.data.post._id}`,
+                    content: response.data.post.content,
+                    image: response.data.post.images[0].url,
+                });
+            }
 
             if (response.data.success) {
                 dispatch({
@@ -191,6 +223,12 @@ const PostContextProvider = ({ children }) => {
                 `${apiURL}/posts/unlike/${postID}`
             );
 
+            socket.emit('UnLikePost', response.data.post);
+
+            if (user._id !== response.data.post.user._id) {
+                await deleteNotify(user._id, `/post/${response.data.post._id}`);
+            }
+
             if (response.data.success) {
                 dispatch({
                     type: UPDATE_POST,
@@ -213,6 +251,36 @@ const PostContextProvider = ({ children }) => {
                 `${apiURL}/comments`,
                 commentForm
             );
+
+            socket.emit('CommentPost', response.data.post);
+
+            if (
+                user._id !== response.data.post.user._id &&
+                !response.data.comment.reply
+            ) {
+                await createNotify({
+                    postID: response.data.comment._id,
+                    text: 'has commented on your post.',
+                    recipients: [response.data.post.user._id],
+                    url: `/post/${response.data.post._id}`,
+                    content: response.data.post.content,
+                    image: response.data.post.images[0].url,
+                });
+            }
+
+            if (
+                response.data.comment.reply &&
+                response.data.comment.tag._id !== user._id
+            ) {
+                await createNotify({
+                    postID: response.data.comment._id,
+                    text: 'mentioned you in a comment.',
+                    recipients: [response.data.comment.tag._id],
+                    url: `/post/${response.data.post._id}`,
+                    content: response.data.post.content,
+                    image: response.data.post.images[0].url,
+                });
+            }
 
             if (response.data.success) {
                 dispatch({
@@ -258,6 +326,16 @@ const PostContextProvider = ({ children }) => {
             const response = await axios.delete(
                 `${apiURL}/comments/${commentID}`
             );
+
+            socket.emit('DeleteCommentPost', response.data.post);
+
+            // if (user._id !== response.data.post.user._id) {
+            //     await deleteNotify(
+            //         response.data.commentDelete._id,
+            //         `/post/${response.data.post._id}`
+            //     );
+            // }
+
             if (response.data.success) {
                 dispatch({
                     type: UPDATE_POST,

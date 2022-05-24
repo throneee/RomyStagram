@@ -1,6 +1,6 @@
 // 1. Require
-const Post = require('../models/PostModal');
-const Comment = require('../models/CommentModal');
+const Post = require('../models/PostModel');
+const Comment = require('../models/CommentModel');
 const User = require('../models/UserModel');
 
 // 2. Main
@@ -177,7 +177,7 @@ const postController = {
                 },
                 { new: true }
             )
-                .populate('user likes', 'username avatar')
+                .populate('user likes', 'username avatar followers')
                 .populate({
                     path: 'comments',
                     populate: {
@@ -226,7 +226,7 @@ const postController = {
                 },
                 { new: true }
             )
-                .populate('user likes', 'username avatar')
+                .populate('user likes', 'username avatar followers')
                 .populate({
                     path: 'comments',
                     populate: {

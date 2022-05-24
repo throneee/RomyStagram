@@ -11,18 +11,24 @@ import reportWebVitals from './reportWebVitals';
 import UserContextProvider from './contexts/UserContext';
 import PostContextProvider from './contexts/PostContext';
 import ExploreContextProvider from './contexts/ExploreContext';
+import SocketContextProvider from './contexts/SocketContext';
 import Loading from './components/layout/Loading';
+import NotifyContextProvider from './contexts/NotifyContext';
 
 ReactDOM.render(
     <React.StrictMode>
-        <UserContextProvider>
-            <PostContextProvider>
-                <ExploreContextProvider>
-                    <Loading />
-                    <App />
-                </ExploreContextProvider>
-            </PostContextProvider>
-        </UserContextProvider>
+        <SocketContextProvider>
+            <UserContextProvider>
+                <NotifyContextProvider>
+                    <PostContextProvider>
+                        <ExploreContextProvider>
+                            <Loading />
+                            <App />
+                        </ExploreContextProvider>
+                    </PostContextProvider>
+                </NotifyContextProvider>
+            </UserContextProvider>
+        </SocketContextProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

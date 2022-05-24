@@ -20,3 +20,7 @@ export const DELETE_POST = 'DELETE_POST';
 export const DETAIL_POST = 'DETAIL_POST';
 
 export const GET_POSTS_EXPLORE = 'GET_POSTS_EXPLORE';
+
+export const SOCKET = 'SOCKET';
+
+export const NOTIFY = 'NOTIFY';

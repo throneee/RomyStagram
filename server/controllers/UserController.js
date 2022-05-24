@@ -262,11 +262,13 @@ const userController = {
             );
 
             const userFollow = await User.find({ _id: req.userID });
+            const userIsFollowed = await User.find({ _id: req.params.id });
 
             return res.json({
                 success: true,
                 message: 'Followed User.',
                 userFollow,
+                userIsFollowed,
             });
         } catch (error) {
             console.log(error);
@@ -310,11 +312,13 @@ const userController = {
             );
 
             const userUnFollow = await User.find({ _id: req.userID });
+            const userIsUnFollowed = await User.find({ _id: req.params.id });
 
             return res.json({
                 success: true,
                 message: 'UnFollowed User.',
                 userUnFollow,
+                userIsUnFollowed,
             });
         } catch (error) {
             console.log(error);

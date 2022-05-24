@@ -67,26 +67,39 @@ const Profile = () => {
 
                                 <div className='profile-middle border-top'>
                                     <div className='profile-middle-top text-center'>
-                                        <Button
-                                            className={
-                                                saveTab
-                                                    ? 'text-dark border-secondary py-3 me-4'
-                                                    : 'text-dark border-top border-secondary py-3 me-4'
-                                            }
-                                            onClick={() => setSaveTab(false)}>
-                                            <i className='bi bi-table me-2'></i>
-                                            Posts
-                                        </Button>
-                                        <Button
-                                            className={
-                                                saveTab
-                                                    ? 'text-dark border-top border-secondary py-3 ms-4'
-                                                    : 'text-dark border-secondary py-3 ms-4'
-                                            }
-                                            onClick={() => setSaveTab(true)}>
-                                            <i className='bi bi-bookmark me-2'></i>
-                                            Saved
-                                        </Button>
+                                        {id === user._id ? (
+                                            <>
+                                                <Button
+                                                    className={
+                                                        saveTab
+                                                            ? 'text-dark border-secondary py-3 me-4'
+                                                            : 'text-dark border-top border-secondary py-3 me-4'
+                                                    }
+                                                    onClick={() =>
+                                                        setSaveTab(false)
+                                                    }>
+                                                    <i className='bi bi-table me-2'></i>
+                                                    Posts
+                                                </Button>
+                                                <Button
+                                                    className={
+                                                        saveTab
+                                                            ? 'text-dark border-top border-secondary py-3 ms-4'
+                                                            : 'text-dark border-secondary py-3 ms-4'
+                                                    }
+                                                    onClick={() =>
+                                                        setSaveTab(true)
+                                                    }>
+                                                    <i className='bi bi-bookmark me-2'></i>
+                                                    Saved
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <Button className='text-dark border-top border-secondary py-3 me-4'>
+                                                <i className='bi bi-table me-2'></i>
+                                                Posts
+                                            </Button>
+                                        )}
                                     </div>
 
                                     <div className='profile-middle-bottom'>

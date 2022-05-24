@@ -57,9 +57,6 @@
 }
 
 /* 3. Dropdown Profile */
-/* .dropdown-header .img-active {
-    padding: 1px;
-} */
 .navbar-left i {
     font-size: 24px;
 }
@@ -118,6 +115,69 @@
     background-color: #e9ecef;
     border-top-left-radius: unset !important;
     border-top-right-radius: unset !important;
+}
+
+/* 4. Notification dropdown */
+.notification > .dropdown > button{
+    background-color: unset;
+    border: unset;
+    padding: 0;
+}
+
+.notification > .dropdown > button:hover,
+.notification > .dropdown > button:active,
+.notification > .dropdown > button:focus,
+.notification > .show > .btn-primary.dropdown-toggle
+
+{
+    background-color: unset !important;
+    border: unset !important;
+    box-shadow: unset !important;
+}
+
+.notification .dropdown-toggle::after {
+    display: none !important;
+}
+
+.notify-content {
+    min-width: 500px;
+    /* min-height: 240px; */
+}
+
+.notification .dropdown-menu {
+    right: -50px;
+    margin-top: 6px !important;
+}
+
+.notification .dropdown-menu::before {
+    content: '';
+    border-width: 20px 24px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+    position: absolute;
+    z-index: -1;
+    right: 38px;
+    top: -28px;
+}
+
+.notification > .dropdown > button {
+    position: relative;
+}
+
+.notifies-count {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+}
+
+.single-notify {
+    text-decoration: none;
+}
+
+.single-notify:hover {
+    background-color: #e9ecef;
 }
 
 /* ************** Tablet and Mobile ************** */

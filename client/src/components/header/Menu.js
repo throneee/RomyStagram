@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { PostContext } from '../../contexts/PostContext';
+import NotifyContent from './NotifyContent';
 
 import { Nav, Image, Dropdown, Button } from 'react-bootstrap';
+import { NotifyContext } from '../../contexts/NotifyContext';
 
 const Menu = () => {
     // ************************************* State *************************************
@@ -20,6 +22,10 @@ const Menu = () => {
 
     // 3. Post state
     const { showAddPostModal, setShowAddPostModal } = useContext(PostContext);
+
+    const {
+        notifiesState: { notifies },
+    } = useContext(NotifyContext);
 
     // ************************************* Function and Variable Declare *************************************
     const menuLinks = [
@@ -69,8 +75,7 @@ const Menu = () => {
             {menuLinks.map((link, index) => {
                 return (
                     <Nav className='me-2' key={index}>
-                        {link.label === 'AddPost' ||
-                        link.label === 'Notification' ? (
+                        {link.label === 'AddPost' ? (
                             <Nav.Link
                                 onClick={
                                     link.label === 'AddPost'
@@ -86,6 +91,24 @@ const Menu = () => {
                                         className={`${link.icon} text-white`}></i>
                                 )}
                             </Nav.Link>
+                        ) : link.label === 'Notification' ? (
+                            <Nav className='notification p-0 ms-2'>
+                                <Dropdown>
+                                    <Dropdown.Toggle>
+                                        <i
+                                            className={`${link.iconfill} text-white`}></i>
+                                        {notifies.length > 0 && (
+                                            <div className='notifies-count rounded-circle bg-danger d-flex align-items-center justify-content-center border border-1'>
+                                                {notifies.length}
+                                            </div>
+                                        )}
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu className='dropdown-menu-end p-0 m-0 border-0 shadow rounded-3'>
+                                        <NotifyContent />
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Nav>
                         ) : link.path === pathname && !showAddPostModal ? (
                             <Nav.Link to={link.path} as={Link}>
                                 <i

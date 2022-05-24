@@ -4,9 +4,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const SocketServer = require('./socketServer');
+
 const userRouter = require('./routes/UserRoute');
 const postRouter = require('./routes/PostRoute');
 const commentRouter = require('./routes/CommentRoute');
+const notifyRoute = require('./routes/NotifyRoute');
 
 // 2. Initialize
 const app = express();
@@ -29,11 +32,23 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 
+// socket
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, {
+    cors: {
+        origin: 'http://localhost:3000',
+    },
+});
+io.on('connection', (socket) => {
+    SocketServer(socket);
+});
+
 app.use('/api/user', userRouter);
 app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
+app.use('/api/notifies', notifyRoute);
 
 // 4. Listen
-app.listen(PORT, () => {
+http.listen(PORT, () => {
     console.log(`Server is listen on port ${PORT}`);
 });

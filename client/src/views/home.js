@@ -36,7 +36,7 @@ const Home = () => {
     useEffect(() => {
         getPosts();
         setLoading(postLoading);
-    }, [posts, user, getPosts]);
+    }, [posts, user, getPosts, postLoading]);
 
     useEffect(() => {
         const fetchUserSuggestion = async () => {
